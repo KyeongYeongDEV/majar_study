@@ -9,7 +9,7 @@ public:
     Storage(int nsize);
     ~Storage();
     void showList();
-    void add_Strg(Storage S1);
+    void add_Strg(Storage &S1);
 };
 
 Storage ::Storage(int nsize){
@@ -42,7 +42,6 @@ Storage ::Storage(int nsize){
 
 Storage:: ~Storage(){
     delete[] strg;
-    nData = 0;
 }
 
 void Storage :: showList(){ //strg 배열 안에 있는 값들을 출력
@@ -53,7 +52,7 @@ void Storage :: showList(){ //strg 배열 안에 있는 값들을 출력
     cout <<endl;
 }
 
-void Storage::add_Strg(Storage S1){
+void Storage::add_Strg(Storage &S1){
     bool check = true;
     int add_num = nData + S1.nData;
     int tmp[nData];
@@ -75,7 +74,7 @@ void Storage::add_Strg(Storage S1){
             }
         }    
     }
-
+    delete[] strg;
     strg = new int[add_num];//재할당
     fill_n(strg,add_num,0);//초기화
 

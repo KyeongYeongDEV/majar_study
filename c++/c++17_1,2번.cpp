@@ -10,7 +10,7 @@ public:
     ~Storage(){}
     void showList();
     void multipleN(int N);//입력 받은 값 중 일의자리수에 N의 배수가 몇 개 있는지 
-    void add_Strg(Storage S1);//총 값들의 수가 20개가 넘으면 덧셈을 수행할 수 없음을 출력 후 종료
+    void add_Strg(Storage &S1);//총 값들의 수가 20개가 넘으면 덧셈을 수행할 수 없음을 출력 후 종료
 };
 
 Storage ::Storage(int nsize){
@@ -39,7 +39,7 @@ void Storage::multipleN(int N){
     cout << N<<"의 배수는 " << cnt <<"개 입니다.\n";
 }
 
-void Storage::add_Strg(Storage S1){
+void Storage::add_Strg(Storage &S1){
     int add_num = nData + S1.nData;
     if(add_num >20){
         cout<< "덧셈을 수행할 수 없습니다.\n";
