@@ -3,6 +3,7 @@ t = turtle.Turtle()
 t.shape("turtle")
 
 s= turtle.textinput("","도형을 입력하시오.: ")
+t.filling("red")
 
 if s == "사각형" :
     s = turtle.textinput("", "가로")
@@ -33,3 +34,4 @@ elif s == "원" :
     w= int(s)
 
     t.circle(w)
+
