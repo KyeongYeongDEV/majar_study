@@ -1,82 +1,182 @@
-package prac;
+package prac1;
 import java.util.Scanner;
-//4Àå 8¹ø
-class phone{
-	private String name;
-	private String tel;
+
+class seat{//ìë¦¬ ì •ë³´ê°€ ìˆëŠ” í´ë˜ìŠ¤
+	private String S_class[];
+	private String A_class[];
+	private String B_class[];
 	
-	public phone(String name, String tel) { //»ı¼ºÀÚ¸¦ ÅëÇØ ÃÊ±âÈ­
-		this.name = name;// this´Â °´Ã¼ ¾ÈÀÇ º¯¼ö¸¦ ¶æÇÔ
-		this.tel = tel;
+	public seat() {//ìë¦¬ ì •ë³´ë¥¼ ë‹´ì„ ë°°ì—´ ë™ì  ì„ ì–¸ í›„ ì´ˆê¸°í™”
+		S_class = new String[10];
+		A_class = new String[10];
+		B_class = new String[10];
+		
+		for(int i =0; i <10; i++) {
+			S_class[i] = "___";
+			A_class[i] = "___";
+			B_class[i] = "___";
+			
+		}
 	}
 	
-	public String get_name() {//ÀÌ¸§À» ¸®ÅÏÇØÁØ´Ù.
-		return this.name;
+	public void set_seat(String[] seat_class,String str, int num) { //ì˜ˆì•½ìê°€ ì›í•˜ëŠ” ìë¦¬ì— ì˜ˆì•½
+		seat_class[num-1] = str;
 	}
 	
-	public String get_tel() {//¹øÈ£¸¦ ¸®ÅÏÇØÁØ´Ù.
-		return this.tel;
+	public String[] get_S() {
+		return S_class;
+	}
+	
+	public String[] get_A() {
+		return A_class;
+	}
+	
+	public String[] get_B() {
+		return B_class;
+	}
+	
+	public void All_print() {//ëª¨ë“  ìë¦¬ ì •ë³´ ì¶œë ¥  
+		for(int i =0; i < 10; i++) {
+			System.out.print(S_class[i] + " ");
+		}
+		
+		System.out.println();
+		for(int i =0; i < 10; i++) {
+			System.out.print(A_class[i] + " ");
+		}
+		
+		System.out.println();
+		for(int i =0; i < 10; i++) {
+			System.out.print(B_class[i] + " ");
+		}
+		System.out.println("\nì¡°íšŒë¥¼ ì™„ë£Œí•˜ì˜€ìŠµë‹ˆë‹¤.");
 	}
 }
 
-class phonebook{
+
+class run{ //ì˜ˆì•½ ì‹œìŠ¤í…œì„ ì‹¤í–‰ ì‹œì¼œì£¼ëŠ” í´ë˜ìŠ¤
 	Scanner scan = new Scanner(System.in);
-	private phone pho[]; //°´Ã¼ ¹è¿­ ¼±¾ğ
-	private int get_num;//ÀÎ¿ø¼ö¸¦ ¹Ş¾ÆÁÙ º¯¼ö
 	
-	public phonebook() {// »ı¼ºÀÚ¿¡¼­ ÀÎ¿ø¼ö¸¦ ¹Ş°í 
-		System.out.print("ÀÎ¿ø¼ö >>");
-		get_num = scan.nextInt();
+	private seat st;	//ì¢Œì„ ì •ë³´ê°€ ë‹´ê²¨ ìˆëŠ” í´ë˜ìŠ¤ ì„ ì–¸  
+	private int num;
+	
+	public run() {
+		st = new seat(); //í´ë˜ìŠ¤ ë³€ìˆ˜ ë™ì  í• ë‹¹ 
+		this.num = 0;
+	}
+	
+	public int get_seat() {//ìë¦¬ ì„ íƒí•˜ëŠ” í•¨ìˆ˜  
+		System.out.print("ì¢Œì„ êµ¬ë¶„:S(1), A(2), B(3)");
+		num = scan.nextInt();
 		
-		pho = new phone[get_num];//±× ÀÎ¿ø¼öÀÇ °ø°£¸¸Å­ °´Ã¼¹è¿­À» ¸¸µé¾îÁØ´Ù.
+		return num;
 	}
 	
-	public void get() {
-		for(int i =0; i < get_num; i++) {//°ª ¹Ş±â
-			System.out.print("ÀÌ¸§°ú ÀüÈ­¹øÈ£(ÀÌ¸§°ú ÀüÈ­¹øÈ£´Â ºóÄ­ ¾øÀÌ ÀÔ·Â>>");
-			String name = scan.next();
-			String tel = scan.next();
-			pho[i] = new phone(name,tel);// ÀÔ·Â ¹ŞÀº °ªÀ» phoneÅ¬·¡½ºÀÇ »ı¼ºÀÚ·Î ÃÊ±âÈ­ÇØÁØ´Ù.
-		}
-		System.out.print("ÀúÀåµÇ¾ú½À´Ï´Ù...");		
-			
-	}
-	
-	public void run() {//½ÇÇàÇØÁÖ´Â ¸Ş¼Òµå
-		while(true) {//¹«ÇÑ¹İº¹
-			boolean check = false; //ÀÌ¸§ÀÌ ÀÖ´ÂÁö È®ÀÎÀ» À§ÇØ »ı¼º	
-			int check_num =0;
-			
-			System.out.print("°Ë»öÇÒ ÀÌ¸§ >>");
-			String get_name = scan.next();
-			
-			if(get_name.equals("±×¸¸")) {//±×¸¸ÀÌ ÀÔ·ÂµÇ¸é Á¾·á
+	public void del_seat(String[] str, String name) { //ìë¦¬ ì˜ˆì•½ì„ ì·¨ì†Œí•´ì£¼ëŠ” í•¨ìˆ˜ 
+		for(int i =0; i < 10; i++) {
+			if(str[i].equals(name)) {//ì˜ˆì•½ì„ ì·¨ì†Œí•˜ê³ ì í•˜ëŠ” ì´ë¦„ê³¼ ê°™ë‹¤ë©´ ì´ë¦„ì„ ì—†ì•¤ë‹¤. 
+				str[i] = "___";
 				break;
 			}
+		}
+	}
+	
+	public void Print_seat(String[] x) { //ì›í•˜ëŠ” ë“±ê¸‰ì˜ ì¢Œì„ ì •ë³´ë¥¼ ì¶œë ¥í•´ì£¼ëŠ” í•¨ìˆ˜  
+		for(int i =0; i< 10; i++) {
+			System.out.print(x[i]+ " ");
+		}
+		System.out.println();
+	}
+	
+	
+	
+	public void set_reser() {	// ì‹¤ì§ˆì ì¸ í”„ë¡œê·¸í–„  
+		while(true) {//ì‚¬ìš©ìê°€ ì¢…ë£Œë¥¼ ì›í•  ë•Œê¹Œì§€ ë¬´í•œ ë°˜ë³µí•œë‹¤.  
+			System.out.print("ì˜ˆì•½:1, ì¡°íšŒ:2, ì·¨ì†Œ:3, ëë‚´ê¸°:4>>");
+			this.num = scan.nextInt();
 			
-			for(int i=0; i < get_num; i++) { // for¹®À» ÅëÇØ ÀÌ¸§ °Ë»ö
-				if(get_name.equals(pho[i].get_name())) {
-					check = true; //ÀÖ´Ù¸é  true
-					check_num = i; //ÀÌ¸§ÀÌ ÀÖ´Â ¹è¿­ÀÇ À§Ä¡¸¦ ÀúÀå
-					break;//ÀÌ¸§À» Ã£¾Ò´Ù¸é ´õÀÌ»óÀÇ ¹İº¹Àº ½Ã°£ ³¶ºñ´Ï Á¾·á
+			String tmp_name;
+			int tmp_num;
+			
+			switch(num) {
+			case 1://ìë¦¬ë¥¼ ì˜ˆì•½ì„ í•˜ëŠ” ê²½ìš°
+				switch(get_seat()) {
+				case 1://Sí´ë˜ìŠ¤ ìë¦¬ 
+					Print_seat(st.get_S()); //í˜„ì¬ ì¢Œì„ ìƒíƒœë¥¼ ì¶œë ¥
+					System.out.print("ì´ë¦„>>>");
+					tmp_name = scan.next();
+					System.out.print("ë²ˆí˜¸>>>");
+					tmp_num = scan.nextInt();
+					
+					st.set_seat(st.get_S(),tmp_name,tmp_num); //ìë¦¬ ì˜ˆì•½ì„ í•´ì¤€ë‹¤.  
+					
+					break;
+					
+				case 2://Aí´ë˜ìŠ¤ ìë¦¬ 
+					Print_seat(st.get_A()); //í˜„ì¬ ì¢Œì„ ìƒíƒœë¥¼ ì¶œë ¥
+					System.out.print("ì´ë¦„>>>");
+					tmp_name = scan.next();
+					System.out.print("ë²ˆí˜¸>>>");
+					tmp_num = scan.nextInt();
+					
+					st.set_seat(st.get_A(),tmp_name,tmp_num);
+					break;
+					
+				case 3://Bí´ë˜ìŠ¤ ìë¦¬ 
+					Print_seat(st.get_B()); //í˜„ì¬ ì¢Œì„ ìƒíƒœë¥¼ ì¶œë ¥
+					System.out.print("ì´ë¦„>>>");
+					tmp_name = scan.next();
+					System.out.print("ë²ˆí˜¸>>>");
+					tmp_num = scan.nextInt();
+					
+					st.set_seat(st.get_B(),tmp_name,tmp_num);
+					break;
 				}
-			}
-			if(check) {//Ã£´Â ÀÌ¸§ÀÌ ÀÖ´Ù¸é 
-				System.out.println(get_name + "ÀÇ ¹øÈ£´Â " + pho[check_num].get_tel() + "ÀÔ´Ï´Ù.");
-				check = false;
-			}
-			else {//Ã£´Â ÀÌ¸§ÀÌ ¾ø´Ù¸é
-				System.out.println(get_name + "ÀÌ ¾ø½À´Ï´Ù.");
+				
+				break;
+				
+			case 2: //ì¡°íšŒ - ëª¨ë“ ì¢Œì„ì˜ ì˜ˆì•½ ì •ë³´ê°€ ë‚˜ì˜¨ë‹¤. 
+				st.All_print();
+				
+				break;
+				
+			case 3://ì˜ˆì•½í•œ ìë¦¬ë¥¼ ì·¨ì†Œí•œë‹¤.
+				switch(get_seat()) {
+				case 1://S
+					Print_seat(st.get_S()); //ì·¨ì†Œí•˜ê³ ìí•˜ëŠ” ë“±ê¸‰ì˜ ìë¦¬ ì •ë³´ ì¶œë ¥  
+					System.out.print("ì´ë¦„>>");
+					tmp_name = scan.next();
+					del_seat(st.get_S(), tmp_name); //ì·¨ì†Œí•˜ê³ ìí•˜ëŠ” ì´ë¦„ì„ ì‚­ì œ  
+					break;
+					
+				case 2://A
+					Print_seat(st.get_A());
+					System.out.print("ì´ë¦„>>");
+					tmp_name = scan.next();
+					del_seat(st.get_A(), tmp_name);
+					break;
+					
+				case 3://B
+					Print_seat(st.get_B());
+					System.out.print("ì´ë¦„>>");
+					tmp_name = scan.next();
+					del_seat(st.get_B(), tmp_name);
+					break;
+				}
+				
+				break;
+				
+			case 4://í”„ë¡œê·¸ë¨ ì¢…ë£Œ
+				scan.close();
+				return;
 			}
 		}
 	}
 }
 
-
-public class prac {
-	public static void main(String args[]) {
-		phonebook P = new phonebook(); //phonebook °´Ã¼ »ı¼º
-		P.get();
-		P.run();
+public class prac5 {
+	public static void main(String arg[]) {
+		run R = new run();
+		R.set_reser();
 	}
 }
