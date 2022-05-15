@@ -23,4 +23,4 @@ forthLabel.grid(row=2,column=1)
 
 changeBtn = Button(window, text = "변환!", command = changedInch)
 
-window.mainloop()
+window.mainloop() 
