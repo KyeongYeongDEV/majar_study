@@ -5,18 +5,18 @@ using namespace std;
 
 class Shape {
 protected:
-string name;//도형의 이름
-int width, height;//도형이 내접하는 사각형의 너비와 높이
+    string name;//도형의 이름
+    int width, height;//도형이 내접하는 사각형의 너비와 높이
 
 public:
-Shape(string n = "", int w = 0, int h = 0) { name = n; width = w; height = h; }
-virtual double getArea() = 0; //dummy 값 리턴
-string getName() { return name; }//이름 리턴
+    Shape(string n = "", int w = 0, int h = 0) { name = n; width = w; height = h; }
+    virtual double getArea() = 0; //dummy 값 리턴
+    string getName() { return name; }//이름 리턴
 };
 
-class Oval : public Shape {
+class Oval : public Shape { //상속
 public:
-Oval(string n , int w, int h) : Shape(n,w,h) { ; }
+    Oval(string n , int w, int h) : Shape(n,w,h) { ; } //생성자 오버라이딩
 
 virtual double getArea() {
 return 3.14 * width * height;
