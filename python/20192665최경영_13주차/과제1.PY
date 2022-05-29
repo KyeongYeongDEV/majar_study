@@ -78,5 +78,5 @@ menu.add_cascade(label="도움말", menu=helpmenu)
 helpmenu.add_command(label="프로그램 정보", command=about)
 
 #스크롤바는 포기
-
+ 
 window.mainloop()
