@@ -11,7 +11,7 @@ def update_Init():
 def update(method):
     global total
     if method == "add":
-        total = total+ int(entry.get())
+        total += int(entry.get())
     elif method == "minus":
         total = total - int(entry.get())
     else:
