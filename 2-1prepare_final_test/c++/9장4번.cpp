@@ -4,7 +4,7 @@ using namespace std;
 class LoopAdder { // 추상 클래스 
     string name; // 루프의 이름 
     int x, y, sum; // x에서 y까지의 합은 sum 
-    void read(); // x, y 값을 읽어 들이는 함수 
+    void read(); // x, y 값을 읽어드리는 함수 
     void write(); // sum을 출력하는 함수 
 protected:
     LoopAdder(string name="") { // 루프의 이름을 받는다. 초깃값은 "" 
@@ -33,20 +33,43 @@ void LoopAdder::run() {
     write(); // 결과 sum을 출력한다. 
 }
 
-class ForLoopAdder : public LoopAdder{
+class whileLoopAdder :public LoopAdder{
 public:
-    ForLoopAdder(string name):LoopAdder(name){;}
-
+    whileLoopAdder(string name) : LoopAdder(name){;}
+    
     int calculate(){
         int sum =0;
-        for(int i = getX(); i <=getY(); i++){
-            sum += i;
+        int x = getX(), y = getY();
+
+        while(x <= y){
+            sum += x;
+            x++;
         }
+
+        return sum;
+    }
+};
+
+class DowhileLoopAdder  : public LoopAdder{
+public:
+    DowhileLoopAdder(string name):LoopAdder(name){;}
+
+    int calculate(){
+        int sum =0, x = getX(), y = getY();
+
+        do{
+            sum += x;
+            x++;
+        }while(x <= y);
+
         return sum;
     }
 };
 
 int main(){
-    ForLoopAdder forLoop("For Loop");
-    forLoop.run();
-} 
+    whileLoopAdder whlieloop("while Loop");
+    DowhileLoopAdder dowhileLoop("Do while Loop");
+
+    whlieloop.run();
+    dowhileLoop.run();
+}

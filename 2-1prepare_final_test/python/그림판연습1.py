@@ -25,7 +25,7 @@ def black():
     color = "black"
 
 def easer():
-    canvas.delete()
+    canvas.delete("all")
 
 window = Tk()    
 canvas = Canvas()

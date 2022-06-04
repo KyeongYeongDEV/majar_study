@@ -1,9 +1,12 @@
 from tkinter import*
 
-window = Tk()
-canvas = Canvas(window)
-
 color = 'black'
+
+def paint(event):
+    global color
+    x1,y1 = (event.x-1), (event.y-1)
+    x2,y2 = (event.x+1) , (event.y+1)
+    canvas.create_line(x1,y1,x2,y2, fill =color)
 
 def red():
     global color
@@ -22,12 +25,17 @@ def black():
     color = 'black'
 
 def delete():
-    canvas.delete()
+    canvas.delete("all")
 
+window = Tk()
+canvas = Canvas(window)
 canvas.grid(row=0, column=0,columnspan=5)
+canvas.bind("<B1-Motion>",paint)
 
 Button(window, text= "red", command=red).grid(row=1,column=0)
 Button(window, text = "blue", command=blue).grid(row=1,column=1)
 Button(window, text = 'green',command = green).grid(row=1,column=2)
 Button(window, text = "black",command= black).grid(row=1,column=3)
 Button(window, text = "delete",command= delete).grid(row=1,column=4)
+
+window.mainloop()
