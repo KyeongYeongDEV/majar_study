@@ -11,7 +11,7 @@ window.config(menu=menu)
 def open():
     file = filedialog.askopenfile(parent=window, mode='r')
     if file != None:
-        lines = file.read
+        lines = file.read 
         textbox.insert('1.0',lines)
         file.close()
 
