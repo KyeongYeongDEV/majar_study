@@ -32,15 +32,13 @@ def exit():
 def copy():
     global es
     es = textbox.get(SEL_FIRST,SEL_LAST)
-
 def cut():
     global es
     es = textbox.get(SEL_FIRST,SEL_LAST)
     textbox.delete(SEL_FIRST,SEL_LAST)
-
 def paste():
-    textbox.insert(INSERT,es)
-
+    global es
+    textbox.insert()
 def delete():
     textbox.delete(SEL_FIRST,SEL_LAST)
 

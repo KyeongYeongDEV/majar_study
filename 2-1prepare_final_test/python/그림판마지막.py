@@ -16,7 +16,7 @@ def paint(event):
 
 def act_paint(event):
     global lastx,lasty
-    lastx = event.x
+    lastx = event.xs
     lasty = event.y
 
 def red():

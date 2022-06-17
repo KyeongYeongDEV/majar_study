@@ -3,6 +3,9 @@ from tkinter import*
 
 window = Tk()
 canvas = Canvas(window,width=400,height=500)
+
+canvas.grid(row=0,column=0,columnspan=5)
+
 color = "black"
 lastx = None
 lasty = None
@@ -32,7 +35,6 @@ def black():
 def delete():
     canvas.destroy('all')
 
-canvas.grid(row=0,column=0,columnspan=5)
 
 window.bind("<B1-Motion>",paint)
 window.bind("ButtonPress>",act_paint)
