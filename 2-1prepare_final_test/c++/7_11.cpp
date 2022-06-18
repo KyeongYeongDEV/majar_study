@@ -5,14 +5,23 @@ class Stack{
     int *arr,top;
 public:
     Stack(){
-        arr = new int[3];
         top=0;
+        arr = new int[3];
+    }
+    Stack& operator<<(int num){
+        arr[top++] = num;
+        return *this;
+    }
+    bool operator!(){
+        if(top == 0)return true;
+        else return false;
     }
 
-    
-
+    void operator>>(int &x){
+        x = arr[--top];
+        
+    }
 };
-
 
 int main(){
     Stack stack;
