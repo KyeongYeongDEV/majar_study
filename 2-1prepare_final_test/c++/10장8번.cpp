@@ -17,6 +17,7 @@ public:
     int getRadius(){return radius;}
 
     bool operator> (Comparable& op2){
+        Circle *c = (Circle*) &op2; //이부분 주의
         if(this->radius > c->getRadius()) return true;
         else return false;
     }
