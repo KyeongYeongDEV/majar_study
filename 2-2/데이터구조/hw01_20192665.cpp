@@ -57,7 +57,7 @@ void sub_Poly(Polynomial A, Polynomial B, Polynomial *ret) {
         ret->hight = A.hight;
         int tmp=0, h_tmp = A.hight - B.hight;
 
-        for(int i=0 ; i <B.hight; i++) {
+        for(int i=0 ; i <B.hight+1; i++) {
             if(i ==0){
                 for(int j=0; j < h_tmp; j++){
                     ret->farr[tmp++] = A.farr[j];
@@ -67,7 +67,17 @@ void sub_Poly(Polynomial A, Polynomial B, Polynomial *ret) {
         }
     }
     else{
+        ret->hight = B.hight;
+        int tmp=0, h_tmp = B.hight - A.hight;
 
+        for(int i=0 ; i <A.hight+1; i++) {
+            if(i ==0){
+                for(int j=0; j < h_tmp; j++){
+                    ret->farr[tmp++] = -B.farr[j];
+                }
+            }
+            ret->farr[tmp++] = A.farr[i] - B.farr[i+h_tmp];
+        }
     }
 }
 void mult_Poly(Polynomial A, Polynomial B, Polynomial *ret){
@@ -82,7 +92,7 @@ void print_Polynomial(Polynomial _in){
     for (int i = 0; i < _in.hight ; i++){
         cout<<_in.farr[i]<<".0x^"<<_in.hight-i;
         if(_in.farr[i+1] < 0){ //음수이면
-            cout << '-';
+            continue; 
         }
         else{
             cout << '+';
@@ -98,10 +108,9 @@ int main(){
     // Polynomial A = {4, {7, 0, 5, 0, 1}};
     Polynomial B = {5, {3, 6, 0, 0, 0, 10}};
 
-
     Polynomial ret;
 
-    add_Poly(A, B, &ret);
+sub_Poly(A, B, &ret);
 
     print_Polynomial(ret);
 
