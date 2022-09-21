@@ -7,6 +7,28 @@ typedef struct Polynomial{
     float farr[100];
 } Polynomial;
 
+void add_Poly(Polynomial A, Polynomial B, Polynomial *ret);
+void sub_Poly(Polynomial A, Polynomial B, Polynomial *ret);
+void mult_Poly(Polynomial A,  Polynomial B, Polynomial *ret);
+void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2);
+void print_Polynomial(Polynomial _in);
+
+int main(){
+    Polynomial A = {5, {3, 6, 0, 0, 0, 10}};
+    // Polynomial B = {4, {7, 0, 5, 0, 1}};
+
+    // Polynomial A = {4, {7, 0, 5, 0, 1}};
+    Polynomial B = {5, {3, 6, 0, 0, 0, 10}};
+
+    Polynomial ret;
+
+    mult_Poly(A, B, &ret);
+
+    print_Polynomial(ret);
+
+    return 0;
+}
+
 void add_Poly(Polynomial A, Polynomial B, Polynomial *ret){
     int tmp=0;
     if (A.hight == B.hight){ //차수가 같은 결우
@@ -80,11 +102,30 @@ void sub_Poly(Polynomial A, Polynomial B, Polynomial *ret) {
         }
     }
 }
-void mult_Poly(Polynomial A, Polynomial B, Polynomial *ret){
+void mult_Poly(Polynomial A,  Polynomial B, Polynomial *ret){
+    int n_tmp=0, max_hight = 0;
+    ret->hight = A.hight + B.hight;
 
+    if(A.hight >= B.hight){ 
+        Polynomial P_tmp[B.hight];
+
+        for(int i=0; i < B.hight+1; i++){ //모든 차수를 다 곱함
+            for(int j=0; j < A.hight+1; j++){ 
+                P_tmp[n_tmp].farr[(B.hight-i)+(A.hight-j)-1] += B.farr[i] * A.farr[j]; 
+            }
+            n_tmp++;
+        }
+        //곱한 걸 더해주기
+        for(int i=0; i < B.hight; i++){
+        }
+    }
+    else{
+
+    }
 }
 void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2){//ret1 = 몫 ret2 = 나머지
-
+    //큰 수에서 작은 수 나누는 거랑
+    //작은 수에서 큰 수 나누는 경우 생각해야 함
 }
 
 
@@ -99,20 +140,4 @@ void print_Polynomial(Polynomial _in){
         }
     }
     cout<<_in.farr[_in.hight] << ".0"<<endl;
-}
-
-int main(){
-    Polynomial A = {5, {3, 6, 0, 0, 0, 10}};
-    // Polynomial B = {4, {7, 0, 5, 0, 1}};
-
-    // Polynomial A = {4, {7, 0, 5, 0, 1}};
-    Polynomial B = {5, {3, 6, 0, 0, 0, 10}};
-
-    Polynomial ret;
-
-sub_Poly(A, B, &ret);
-
-    print_Polynomial(ret);
-
-    return 0;
 }
