@@ -85,27 +85,49 @@ void sub_Poly(Polynomial A, Polynomial B, Polynomial *ret) {
 
 void mult_Poly(Polynomial A,  Polynomial B, Polynomial *ret){
     int n_tmp=0;
-    Polynomial P_tmp[B.hight];
+    Polynomial *P_tmp;
 
-    for(int i=0; i < B.hight; i++){ //초기화
-        for(int j=0; j < 100; j++){
-            P_tmp[i].farr[j] =0;
+
+
+    //곱하기 
+    //A가 클 때와 AB가 같을 때 경우 나누기
+    if(A.hight == B.hight){ 
+         P_tmp = (Polynomial*)malloc(sizeof(Polynomial) * A.hight);
+            for(int i=0; i < A.hight; i++){ //초기화
+                for(int j=0; j < 100; j++){
+                P_tmp[i].farr[j] =0;
+            }
+        }
+        for(int i=0; i < B.hight+1; i++){ //모든 차수 다 곱하기
+            for(int j=0; j < A.hight+1; j++){ 
+                P_tmp[n_tmp].farr[i+j] = B.farr[i] * A.farr[j]; 
+            }
+            P_tmp[n_tmp].hight = B.hight+(A.hight-i);
+            n_tmp++;
         }
     }
-
-    //곱하기
-    if(A.hight >= B.hight){ 
+    else if(A.hight > B.hight){
+        P_tmp = (Polynomial*)malloc(sizeof(Polynomial) * A.hight);
+            for(int i=0; i < A.hight; i++){ //초기화
+                for(int j=0; j < 100; j++){
+                P_tmp[i].farr[j] =0;
+            }
+        }
         for(int i=0; i < B.hight+1; i++){ //모든 차수 다 곱하기
-            if(i==0){
-                P_tmp[n_tmp].hight = B.hight+A.hight;
-            }
-
             for(int j=0; j < A.hight+1; j++){ 
-                P_tmp[n_tmp++].farr[i+j] = B.farr[i] * A.farr[j]; 
+                P_tmp[n_tmp].farr[i+j] = B.farr[i] * A.farr[j]; 
             }
+            P_tmp[n_tmp].hight = B.hight+(A.hight-i);
+            n_tmp++;
         }
     }
     else{
+        P_tmp = (Polynomial*)malloc(sizeof(Polynomial) * B.hight);
+        for(int i=0; i < B.hight; i++){ //초기화
+            for(int j=0; j < 100; j++){
+                P_tmp[i].farr[j] =0;
+           }
+        }
         for(int i=0; i < A.hight+1; i++){ //모든 차수 다 곱하기
             for(int j=0; j < B.hight+1; j++){ 
                 P_tmp[n_tmp].farr[i+j] = A.farr[i] * B.farr[j]; 
@@ -185,10 +207,10 @@ void print_Polynomial(Polynomial _in){
 }
 
 int main(){
-    // Polynomial A = {5, {3, 6, 0, 0, 0, 10}};
+    Polynomial A = {5, {3, 6, 0, 0, 0, 10}};
     // Polynomial B = {4, {7, 0, 5, 0, 1}};
 
-    Polynomial A = {4, {7, 0, 5, 0, 1}};
+    // Polynomial A = {4, {7, 0, 5, 0, 1}};
     Polynomial B = {5, {3, 6, 0, 0, 0, 10}};
 
     Polynomial ret;
