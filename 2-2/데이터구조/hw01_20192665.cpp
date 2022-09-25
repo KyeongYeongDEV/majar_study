@@ -169,8 +169,19 @@ void mult_Poly(Polynomial A,  Polynomial B, Polynomial *ret){
 }
 
 void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2){//ret1 = 몫 ret2 = 나머지
-    //큰 수에서 작은 수 나누는 거랑
-    //작은 수에서 큰 수 나누는 경우 생각해야 함
+    Polynomial P_tmp;
+    
+
+    for(int i=0; i< A.hight-B.hight+1; i++){
+        int n_tmp=0;
+        for(int j=0; j < 100; j++){//임시변수 초기화
+            P_tmp.farr[j] = 0;
+        } 
+
+        
+
+    }
+
 }
 
 
@@ -190,30 +201,46 @@ void print_Polynomial(Polynomial _in){
 }
 
 int main(){
-    Polynomial A = {5, {3, 6, 0, 0, 0, 10}};
+    // Polynomial A = {5, {3, 6, 0, 0, 0, 10}};
     // Polynomial B = {4, {7, 0, 5, 0, 1}};
 
     // Polynomial A = {4, {7, 0, 5, 0, 1}};
     // Polynomial B = {5, {3, 6, 0, 0, 0, 10}};
 
     // Polynomial A = {1, {1,1}};
-    Polynomial B = {1, {1,-1}};
+    // Polynomial B = {1, {1,-1}};
+
+    Polynomial A = {2, {1,0,-1}};
+    Polynomial B = {1, {1,1}};
+
 
     Polynomial ret;
-
+    Polynomial ret1;//몫
+    Polynomial ret2;//나머지
     
     cout << "A :";
     print_Polynomial(A);
     cout<< "B :";
     print_Polynomial(B);
+    
+    add_Poly(A, B, &ret);
+    cout << "더하기 결과 : ";
+    print_Polynomial(ret);
+
+    sub_Poly(A, B, &ret);
+    cout << "빼기 결과 : ";
+    print_Polynomial(ret);
 
     mult_Poly(A, B, &ret);
     cout << "곱하기 결과 : ";
     print_Polynomial(ret);
 
-    // sub_Poly(A, B, &ret);
-    // cout << "빼기 결과 : ";
-    // print_Polynomial(ret);
+    div_Poly(A, B, &ret1, &ret2);
+    cout << "나머지 결과 : ";
+    print_Polynomial(ret); // 프린트도 새로 만들기
+
+
+
 
     return 0;
 }
