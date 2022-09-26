@@ -165,25 +165,48 @@ void mult_Poly(Polynomial A,  Polynomial B, Polynomial *ret){
             }
         }
     }
-    
 }
 
-void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2){//ret1 = 몫 ret2 = 나머지
+void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2){//ret1 = 몫 ret2 = 나머지   
     Polynomial P_tmp;
-    
-
-    for(int i=0; i< A.hight-B.hight+1; i++){
-        int n_tmp=0;
-        for(int j=0; j < 100; j++){//임시변수 초기화
-            P_tmp.farr[j] = 0;
-        } 
-
-        
-
+    ret1->hight = A.hight - B.hight;
+    for(int i=0; i< 100; i++){
+        ret1->farr[i] = 0;
+        ret2->farr[i] = 0;
     }
 
-}
+    for(int i=0; i< B.hight; i++){
+        int n_tmp=0;
+         //몫 저장
+        ret1->farr[(A.hight) -(B.hight)] = A.farr[i] / B.farr[0];
+        
+        //B랑 ret1이랑 곱하기 tmp에 저장
+        for(int j=0; j < 100; j++){ //임시변수 초기화
+            P_tmp.farr[i]= 0;
+        }
+        for(int j =0; j <ret1->hight+1 ; j++){
+            for(int q= 0; q< B.hight+1; q++){
+                P_tmp.farr[n_tmp++] = -(ret1->farr[j] + B.farr[q]); // 빼기를 해주고 값을 저장을 한다.
+            }
+        }
+        P_tmp.hight = A.hight;
 
+        //A와 tmp를 더한다.
+        int h_tmp = A.hight - P_tmp.hight;
+        for(int j = h_tmp; j < P_tmp.hight+1; j++){
+            A.farr[j] += P_tmp.farr[j];
+        }
+    }
+
+    //끝나고 남은 A가 나머지값이다
+    for(int i=0; i < 100; i++){ //ret2 초기화
+            ret2->farr[i]= 0;
+    }
+    for(int i =0; i < A.hight; i++){
+        ret2->farr[i] = A.farr[i];
+    }
+    ret2->hight = A.hight;
+}
 
 void print_Polynomial(Polynomial _in){
     for (int i = 0; i < _in.hight ; i++){
@@ -198,6 +221,45 @@ void print_Polynomial(Polynomial _in){
         }
     }
     cout<<_in.farr[_in.hight] << ".0"<<endl;
+}
+
+void print_div_Polynomial(Polynomial _in1, Polynomial _in2){//나누기 결과를 출력해주는 함수
+    cout << "나머지 결과 :"<<endl;
+    cout << "몫 :";
+    for(int i=0 ; i < _in1.hight+1; i++){
+        if(_in1.farr[i] == 0){
+            cout << "0.0x^"<<_in1.hight - i;
+
+            if(_in1.farr[i+1] < 0){ //음수이면
+                continue; 
+            }
+            else{
+              cout << '+';
+            }
+        }
+        else{
+            cout << _in1.farr[i]<<"x^"<<_in1.hight-i;
+            if(_in2.farr[i+1] < 0){ //음수이면
+                continue; 
+             }
+            else{
+                cout << '+';
+            }
+        }
+    }
+    cout<<endl;
+    if(_in2.farr[0] != 0){
+        cout << "나누기 :";
+        for(int i=0; i < _in2.hight+1; i++){
+            if(_in1.farr[i] == 0){
+                cout << "0.0x^"<<_in1.hight - i;
+            }
+            else{
+                cout << _in1.farr[i]<<"x^"<<_in1.hight-i;
+            }
+        }
+    }
+    
 }
 
 int main(){
@@ -236,8 +298,7 @@ int main(){
     print_Polynomial(ret);
 
     div_Poly(A, B, &ret1, &ret2);
-    cout << "나머지 결과 : ";
-    print_Polynomial(ret); // 프린트도 새로 만들기
+    print_div_Polynomial(ret1,ret2); // 프린트도 새로 만들기
 
 
 
