@@ -38,7 +38,7 @@ public class ex10_8 extends JFrame{
 
             switch(keyCode){
                 case KeyEvent.VK_UP:
-                    la.setLocation(la.getX(), la.getY()-FLYING_UNIT); break;
+                    la.setLocation(la.getX(), la.getY()-FLYING_UNIT); break; //왼쪽 젤 위 좌표가 (0,0)이기 때문에 
                 case KeyEvent.VK_DOWN:
                     la.setLocation(la.getX(), la.getY() + FLYING_UNIT); break;
                 case KeyEvent.VK_LEFT:
