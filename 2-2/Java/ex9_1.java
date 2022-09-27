@@ -14,6 +14,6 @@ class MyFrame extends JFrame{
 
 public class ex9_1{
 	public static void main(String[] args) {
-		MyFrame mf = new MyFrame();
+		new MyFrame();
 	}
 }

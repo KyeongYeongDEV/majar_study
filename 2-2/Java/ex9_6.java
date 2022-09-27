@@ -28,7 +28,7 @@ class NullContainerEx extends JFrame{
 	}
 }
 
-public class ex9_6ex {
+public class ex9_6 {
 	public static void main(String[] args) {
 		new NullContainerEx();
 	}

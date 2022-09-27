@@ -22,7 +22,7 @@ public class ex10_1_2 extends JFrame{
 		//내부 클래스로 Action리스너를 만든다 
 		private class MyActionListener implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
-				JButton b = (JButton)e.getSource()
+				JButton b = (JButton)e.getSource();
 				if(b.getText().equals("Action")) {
 					b.setText("액션");
 				}
