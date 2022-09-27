@@ -1,5 +1,4 @@
 #include <iostream>
-#include <math.h>
 using namespace std;
 
 typedef struct Polynomial{
@@ -169,6 +168,9 @@ void mult_Poly(Polynomial A,  Polynomial B, Polynomial *ret){
 
 void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2){//ret1 = 몫 ret2 = 나머지   
     Polynomial P_tmp;
+    for(int i=0; i < 100; i++){
+        P_tmp.farr[i] = 0;
+    }
 
     ret1->hight = A.hight - B.hight;
 
@@ -182,13 +184,9 @@ void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2){//
          //몫 저장
         ret1->farr[(A.hight) -(B.hight)] += A.farr[i] / B.farr[0];
 
-        
-        for(int j=0; j < 100; j++){ //임시변수 초기화
-            P_tmp.farr[i]= 0;
-        }
         //B랑 ret1이랑 곱하기 tmp에 저장
         Polynomial mult_tmp[B.hight+1];
-        for(int j =0; j < B.hight; j++){//임시변수 초기화
+        for(int j =0; j < B.hight+1; j++){//임시변수 초기화
             for(int k =0; k < 100; k++){
                 mult_tmp[j].farr[k]=0;
             }
@@ -200,58 +198,73 @@ void div_Poly(Polynomial A, Polynomial B, Polynomial *ret1, Polynomial *ret2){//
             mult_tmp[n_tmp].hight = ret1->hight + (B.hight -j);
             n_tmp++;
         }
-       
-
----------------------------------------
-    for(int i=1; i < n_tmp; i++){ //P_tmp의 크기만큼 돌려서 ret에 더해준다.
-        int tmp = 0;
-
-        if(P_tmp[i].hight == ret->hight){//차수가 같다
-            for(int j = 0 ; j< P_tmp[i].hight + 1; j++){
-                ret->farr[j] += P_tmp[i].farr[j];
-            }
+        //P_tmp 에 위에서 계산한 곱한 값 다 더하기
+        
+        for(int j=0; j < mult_tmp[0].hight; j++){ //임시변수 초기화
+            P_tmp.farr[j] = mult_tmp[0].farr[j];
         }
-        else if(P_tmp[i].hight > ret->hight){ 
-            int h_tmp = P_tmp[i].hight - ret->hight;
+        P_tmp.hight = mult_tmp[0].hight;
 
-            for(int j =0; j < ret->hight+1; j++){
-                if(j ==0){
-                    float r_tmp[100]={0,};
-                    for(int q =0; q < ret->hight; q++){//ret arr를 임시저장
-                        r_tmp[q]= ret->farr[q];
-                        ret->farr[q] = 0;
-                    }
+        for(int j=1; j< n_tmp; j++){
+            int tmp =0; 
 
-                    for(int k=0; k < h_tmp; k++){
-                        ret->farr[tmp++] += P_tmp[i].farr[k];
-                    }
-                    for(int q = h_tmp; q < ret->hight+1; q++){
-                         r_tmp[q]+= P_tmp[i].farr[q];
-                    }
+            if(P_tmp.hight == mult_tmp[j].hight){
+                for(int k =0; k < P_tmp.hight;k++){
+                    P_tmp.farr[k] += mult_tmp[j].farr[k];
+                }
+            }
+            else if(P_tmp.hight > mult_tmp[j].hight){
+                int h_gap= P_tmp.hight - mult_tmp[j].hight;
+
+                for(int k =h_gap; k < P_tmp.hight+1; k++){
+                    P_tmp.farr[k] += mult_tmp[j].farr[k];
+                }
+            }
+            else{
+                int h_gap= mult_tmp[j].hight - P_tmp.hight ;
+                float Pf_tmp[100] = {0,};
+
+                for(int k= 0;  k< P_tmp.hight+1; k++){
+                    Pf_tmp[k] = P_tmp.farr[k];
+                    P_tmp.farr[k] =0;
                 }
 
-                ret->farr[tmp++] += P_tmp[i].farr[j+h_tmp];
+                for(int k=0; k < mult_tmp[j].hight+1; k++){
+                    P_tmp.farr[k] = mult_tmp[j].farr[k];
+                }
+
+                for(int k= h_gap; k< P_tmp.hight+1;k++){
+                    P_tmp.farr[k] += Pf_tmp[k];
+                }
+
+                P_tmp.hight = mult_tmp[j].hight;
             }
-            ret->hight = P_tmp[i].hight; //더 큰 차수로 바꿔준다.
+        }
+
+        //A와 tmp를 뺀다.
+        if(A.hight == P_tmp.hight){
+            for(int j = 0; j< P_tmp.hight+1; j++){
+                A.farr[j] -= P_tmp.farr[j];
+            }
+        }
+        else if(A.hight > P_tmp.hight){
+            int h_tmp = A.hight - P_tmp.hight, tmp =0;
+
+            for(int j=h_tmp; j <P_tmp.hight+1; j++){
+                A.farr[j] -= P_tmp.farr[j];
+            }
         }
         else{
-            int h_tmp = ret->hight- P_tmp[i].hight;
-            for(int q =0; q < ret->hight+1; q++){
-                if(P_tmp[i].farr[q]==0){continue;}
-                else{
-                    ret->farr[q] += P_tmp[i].farr[q];
-                }
-            }
+            A.hight = P_tmp.hight;
+
+
         }
+
     }
 
-
-        //A와 tmp를 더한다.
-        A.hight = P_tmp.hight;
-        int h_tmp = A.hight - P_tmp.hight;
-        for(int j = h_tmp; j < P_tmp.hight+1; j++){
-            A.farr[j] += P_tmp.farr[j];
-        }
+    //ret1
+    for(int i=0; i < P_tmp.hight+1; i++){
+        ret1->farr[i] = P_tmp.farr[i];
     }
 
     //끝나고 남은 A가 나머지값이다
@@ -309,7 +322,7 @@ void print_div_Polynomial(Polynomial _in1, Polynomial _in2){//나누기 결과�
     cout << _in1.farr[_in1.hight];
     cout<<endl;
     if(_in2.farr[0] != 0){
-        cout << "나누기 :";
+        cout << "나머지 :";
         for(int i=0; i < _in2.hight+1; i++){
             if(_in1.farr[i] == 0){
                 cout << "0.0x^"<<_in1.hight - i;
@@ -323,42 +336,37 @@ void print_div_Polynomial(Polynomial _in1, Polynomial _in2){//나누기 결과�
 }
 
 int main(){
-    // Polynomial A = {5, {3, 6, 0, 0, 0, 10}};
-    // Polynomial B = {4, {7, 0, 5, 0, 1}};
-
-    // Polynomial A = {4, {7, 0, 5, 0, 1}};
-    // Polynomial B = {5, {3, 6, 0, 0, 0, 10}};
-
-    // Polynomial A = {1, {1,1}};
-    // Polynomial B = {1, {1,-1}};
-
-    Polynomial A = {2, {1,0,-1}};
-    Polynomial B = {1, {1,1}};
+    Polynomial A[3] = {{2, {1,0,-1}},{5, {3, 6, 0, 0, 0, 10}},{4, {7, 0, 5, 0, 1}} };
+    Polynomial B[3] = {1, {1,1},{4, {7, 0, 5, 0, 1}},{5, {3, 6, 0, 0, 0, 10}}};
 
 
     Polynomial ret;
     Polynomial ret1;//몫
     Polynomial ret2;//나머지
     
-    cout << "A :";
-    print_Polynomial(A);
-    cout<< "B :";
-    print_Polynomial(B);
+    for(int i=0; i< 3; i++){
+        cout << "A :";
+        print_Polynomial(A[i]);
+        cout<< "B :";
+        print_Polynomial(B[i]);
+        
+        add_Poly(A[i], B[i], &ret);
+        cout << "더하기 결과 : ";
+        print_Polynomial(ret);
+
+        sub_Poly(A[i], B[i], &ret);
+        cout << "빼기 결과 : ";
+        print_Polynomial(ret);
+
+        mult_Poly(A[i], B[i], &ret);
+        cout << "곱하기 결과 : ";
+        print_Polynomial(ret);
+
+        div_Poly(A[i], B[i], &ret1, &ret2);
+        print_div_Polynomial(ret1,ret2);
+        cout<<endl;
+    }
     
-    add_Poly(A, B, &ret);
-    cout << "더하기 결과 : ";
-    print_Polynomial(ret);
-
-    sub_Poly(A, B, &ret);
-    cout << "빼기 결과 : ";
-    print_Polynomial(ret);
-
-    mult_Poly(A, B, &ret);
-    cout << "곱하기 결과 : ";
-    print_Polynomial(ret);
-
-    div_Poly(A, B, &ret1, &ret2);
-    print_div_Polynomial(ret1,ret2); // 프린트도 새로 만들기
 
 
 
