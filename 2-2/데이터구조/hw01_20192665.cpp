@@ -364,12 +364,7 @@ int main(){
 
         div_Poly(A[i], B[i], &ret1, &ret2);
         print_div_Polynomial(ret1,ret2);
-        cout<<endl;
+        cout<<endl<<endl;
     }
-    
-
-
-
-
     return 0;
 }
