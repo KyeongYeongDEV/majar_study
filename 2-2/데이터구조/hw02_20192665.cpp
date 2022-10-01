@@ -1,20 +1,60 @@
 #include<iostream>
 using namespace std;
+#define MAX_SIZE 10
 
-class Stack{
-private:
-    int size; // 최대 크기
-    int *arr; //원소들을 저장
-    int top; //현재 젤 높은 위치를 알려줌
-
-public:
-    Stack(int size){
-        this->size = size;
-        arr = (int*)malloc(sizeof(int) * size); //배열의 최대크기를 지정해 준다.
-        top =0;
-    }
-
-    void create(size)
+struct Stack{
+    int top;
+    int size;
+    int *arr;
 };
 
-//구조체로 해야 할 듯
+Stack create(int size){
+    Stack s;
+    s.arr = (int*)malloc(sizeof(int) * size);
+    return s;
+}
+
+bool is_full(Stack s){
+    if(s.top == s.size) {return true;}
+    else{return false;}
+}
+
+bool is_empty(Stack *s){
+    if(s->top == 0){return true;}
+    else{return false;}
+}
+
+void push(Stack s, int item){
+    if(is_full(s)){
+        cout<< "ERROR_STACKFULL\n";
+    }
+    else{
+        s.arr[s.top++] = item;    
+    }    
+}
+
+int pop(Stack s){
+    if(::is_empty(&s)){
+        cout<< "ERROR_STACKEMPTY\n";
+        return 0;
+    }
+    else{
+        int tmp = s.arr[s.top];
+        s.top--;
+        return tmp;
+    }
+}
+
+int peek(Stack s){
+    if(::is_empty(&s)){
+        cout<< "ERROR_STACKEMPTY\n";
+        return 0;
+    }
+    else{
+        return s.arr[s.top];
+    }
+}
+
+int main(){
+
+}
