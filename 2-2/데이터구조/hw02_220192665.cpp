@@ -2,7 +2,7 @@
 using namespace std;
 
 struct Stack{
-    int top;
+    int top; //큐에서는 사용 안함
     int size;
     int max_size;
     int *arr;
@@ -27,7 +27,7 @@ void init(Stack *q){
 }
 
 bool is_empty(Stack *q){
-    if(q->size == -1){return true;}
+    if(q->size == 0){return true;}
     else{return false;}
 }
  
@@ -47,22 +47,28 @@ void enqueue(Stack *q, int e){
 
 int dequeque(Stack *q){
     if(::is_empty(q)){
-        cout <<"1ERROR_QUEUEEMPTY"<<endl;
+        cout <<"ERROR_QUEUEEMPTY"<<endl;
         return 0;
     }
     else{
-        q->size--;
-        int tmp = q->arr[q->top];
-        q->top++;
-        if(q->top == q->size){}
+        int tmp = q->arr[0];
 
+        int arr[q->size];
+        for(int i=0; i < q->size-1; i++){
+            arr[i] = q->arr[i+1];
+        }
+       
+        for(int i=0; i< q->size; i++){
+            q->arr[i] = arr[i];
+        }
+        q->size--;
         return tmp;
     }
 }
 
 int peek(Stack *q){
     if(::is_empty(q)){
-          cout <<"2ERROR_QUEUEEMPTY"<<endl;
+          cout <<"ERROR_QUEUEEMPTY"<<endl;
           return 0;
     }
     else{
