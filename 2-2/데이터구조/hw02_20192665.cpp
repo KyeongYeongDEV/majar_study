@@ -135,8 +135,6 @@ int main(){
 
     Stack s = create(2);
 
-    cout <<"pop :"<<pop(&s) <<endl;
-
     push(&s,6);
     push(&s,5);
     push(&s,4);
@@ -155,7 +153,6 @@ int main(){
     enqueue(&q,8);
 
     cout<< "peek2 :"<< peek2(&q)<<endl;
-    cout <<"dequeque :"<< dequeque(&q)<<endl;
     cout <<"dequeque :"<< dequeque(&q)<<endl;
     cout <<"dequeque :"<< dequeque(&q)<<endl;
 
