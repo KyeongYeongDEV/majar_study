@@ -14,14 +14,12 @@ public class ch10_2 extends JFrame{
         c.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseReleased(MouseEvent e){
-                Container c = (Container)e.getSource();
                 c.setBackground(Color.GREEN);
             }
         });
         c.addMouseMotionListener(new MouseMotionAdapter(){
             @Override
             public void mouseDragged(MouseEvent e){
-                Container c = (Container)e.getSource();
                 c.setBackground(Color.YELLOW);
             }
         });
