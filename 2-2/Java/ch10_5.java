@@ -33,7 +33,6 @@ public class ch10_5 extends JFrame{
         setSize(300,300);
         setVisible(true);
     }
-
     public static void main(String[] args){
         new ch10_5();
     }
