@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public class ch11_5 extends JFrame{
     public ch11_5(){
@@ -14,12 +15,12 @@ public class ch11_5 extends JFrame{
         JLabel jl = new JLabel("120");
         js.setMajorTickSpacing(20);
         js.setPaintLabels(true);
-        // js.addChangeListener(new ChangeListener() {
-		// 	public void stateChanged(ChangeEvent e) {
-		// 		JSlider temp=(JSlider)e.getSource();
-		// 		jl.setText(Integer.toString(temp.getValue()));
-		// 	}
-		// });
+        js.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider temp=(JSlider)e.getSource();
+				jl.setText(Integer.toString(temp.getValue()));
+			}
+		});
 
         c.add(js);
 
