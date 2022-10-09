@@ -13,16 +13,13 @@ Node* insert_last(Node *head, element data){
 
     if(head == NULL){
         head= tmp;
+        tmp->link = head;
     }
     else{
-        Node *horse = head->link;
+        tmp->link = head->link; //원형을 연결
+        head->link = tmp;
+        head = tmp; //헤드가 결국 마지막 노드가 된다.
 
-        while(horse != NULL){
-            horse = horse->link;
-        }
-        
-        horse = tmp;
-        head = horse;
     }
     return head;
 }
@@ -45,18 +42,20 @@ Node* insert_first(Node *head, int data){ //리스트의 시작 부분에 항목
 }
 
 void print_list(Node *head){
-    Node *tmp = head;
+    Node *tmp = head->link;
 
     if(tmp == NULL){
         cout << "NULL";
     }
-    else{
+    else{ 
         cout << tmp->data<< "-> ";
         tmp = tmp->link;
+       
         while(tmp != head){
             cout << tmp->data<< "-> ";
             tmp = tmp->link;
         }   
+        cout << tmp->data<< "-> ";
     }
     
     cout<<endl;
@@ -65,12 +64,12 @@ void print_list(Node *head){
 int main(){
     Node *head = NULL;
 
-    // head = insert_last(head, 20);
-    // head = insert_last(head, 30);
-    // head = insert_last(head, 40);
+    head = insert_last(head, 20);
+    head = insert_last(head, 30);
+    head = insert_last(head, 40);
     head = insert_first(head, 10);
-    head = insert_first(head, 20);
-    head = insert_first(head, 30);
+    // head = insert_first(head, 20);
+    // head = insert_first(head, 30);
 
     print_list(head);
 }
