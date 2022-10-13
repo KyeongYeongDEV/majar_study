@@ -38,13 +38,12 @@ void push(Stack *s, int item){
 int pop(Stack *s){
     if(::is_empty(s)){
         cout<< "ERROR_STACKEMPTY\n";
-        return 0;
+        
     }
     else{
         s->top--;
         int tmp = s->arr[s->top];
         
-
         return tmp;
     }
 }
@@ -135,6 +134,7 @@ int main(){
 
     Stack s = create(2);
 
+    cout <<"pop :"<<pop(&s) <<endl;
     push(&s,6);
     push(&s,5);
     push(&s,4);
