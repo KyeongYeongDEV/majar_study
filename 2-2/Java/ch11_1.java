@@ -15,7 +15,7 @@ public class ch11_1  extends JFrame{
         b1 = new JCheckBox("버튼 비활성화");
         b2 = new JCheckBox("버튼 감추기");
         JButton btn1 = new JButton("test button");
-        b1.addItemListener(new ItemListener(){
+        b1.addItemListener(new ItemListener(){ 
             public void itemStateChanged(ItemEvent e){
                 if(e.getStateChange() == ItemEvent.SELECTED){
                     btn1.setEnabled(false);
