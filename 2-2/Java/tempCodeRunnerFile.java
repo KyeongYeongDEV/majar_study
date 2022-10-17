@@ -1,0 +1,2 @@
+
+        JPanel west = new JPanel();

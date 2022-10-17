@@ -41,7 +41,7 @@ public class ch11_3 extends JFrame{
 
         JPanel center = new JPanel();
         center.setLayout(new GridLayout(8,2));
-        center.setBackground(Color.PINK);
+    center.setBackground(Color.PINK);   
 
         for(int i=0; i<8; i++){
             money[i] = new JLabel(moneytag[i]);
@@ -54,10 +54,11 @@ public class ch11_3 extends JFrame{
         JPanel west = new JPanel();
         west.setBackground(Color.pink);
         c.add(west,BorderLayout.WEST);
+        
 
         JPanel east = new JPanel();
-        east.setBackground(Color.pink);
         c.add(east, BorderLayout.EAST);
+        east.setBackground(Color.pink);
 
         JPanel south = new JPanel();
         south.setBackground(Color.pink);

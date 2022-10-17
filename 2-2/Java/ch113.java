@@ -1,8 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-public class ch113 extends JFrame{
+ public class ch113 extends JFrame{
     public ch113(){
         setTitle("dd");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,10 +22,8 @@ public class ch113 extends JFrame{
         pc.setBackground(Color.PINK);
         c.add(ps, BorderLayout.SOUTH);
         c.add(pe, BorderLayout.EAST);
-        c.add(pw, BorderLayout.WEST);
-
-        
-
+        c.add(pw, BorderLayout.WEST);                                   
+                
         JLabel b = new JLabel("금액");
         pn.add(b);
 
@@ -69,7 +66,7 @@ public class ch113 extends JFrame{
 
 
         setVisible(true);
-    }
+}
 
     public static void main(String [] args){
         new ch113();
