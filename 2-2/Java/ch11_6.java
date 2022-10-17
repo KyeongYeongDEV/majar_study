@@ -16,14 +16,14 @@ public class ch11_6 extends JFrame{
         
         js.setMajorTickSpacing(20);//큰 눈금의 간격
         js.setMinorTickSpacing(5); //작은 눈금의 간격
-        js.setPaintLabels(true);//true이면 슬라이더의 label을 보이게 한다. false면 감춘다.
-        js.setPaintTicks(true);//true이면 슬라이더의 눈그믈 보이게 한다. false면 감춘다.
+        js.setPaintLabels(true);//true이면 슬라이더의 눈금의 숫자를 보이게 한다. false면 감춘다.
+        js.setPaintTicks(true);//true이면 슬라이더의  눈그믈 보이게 한다. false면 감춘다.
 
         js.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e){//슬라이더의 위치가 변하면
                 JSlider temp = (JSlider)e.getSource(); //슬라이스가 몇번째 위치에 잇는지 저장
                 String text = jta.getText();// 적혀있는 문자열 저장
-                if(text.length() <= js.getValue()){//텍스트의 수가 더 적다면 
+                if (text.length() <= js.getValue()){//텍스트의 수가 더 적다면 
                     js.setValue(text.length()); //슬라이스의 값을 0;
                 }
                 else{
