@@ -5,7 +5,7 @@ import java.awt.event.*;
 public class ch11__4 extends JFrame{
     public ch11__4(){
         setTitle("ddd");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         setSize(300,300);
 
         Container c = getContentPane();
