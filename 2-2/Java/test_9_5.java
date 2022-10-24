@@ -8,11 +8,18 @@ public class test_9_5 extends JFrame{
         setSize(400,300);
 
         Container c = getContentPane();
-        c.setLayout(new GridLayout(1,10));
+        c.setLayout(new GridLayout(4,4));
 
-        for(int i=0;i < 10; i++){
-            JButton btn = new JButton(Integer.toString(i));
-            btn.setBackground(Color.RED);
+        Color [] color = {
+            Color.RED,Color.BLACK,Color.BLUE,Color.CYAN,
+            Color.RED,Color.BLACK,Color.BLUE,Color.CYAN,
+            Color.RED,Color.BLACK,Color.BLUE,Color.CYAN,
+            Color.RED,Color.BLACK,Color.BLUE,Color.CYAN
+        };
+
+        for(int i=0;i < 16; i++){
+            JLabel btn = new JLabel(Integer.toString(i));
+            btn.setBackground(color[i]);
             btn.setOpaque(true);
             c.add(btn);
 
