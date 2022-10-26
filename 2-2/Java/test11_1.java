@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.event.*;
 
 public class test11_1 extends JFrame{
     public test11_1(){

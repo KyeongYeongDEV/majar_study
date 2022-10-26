@@ -35,7 +35,7 @@ void calcIncomeTax(float income, int year){
     else{ //8000 초과
         tax = 1000 * 0.08 + (4000-1000) * 0.17 + (8000-4000) *0.26+ (income-8000)*0.35;
     }
-
+    printf("%d년 연봉 : %.0lf\t세금 : %.0lf\t",year+1,income,tax);
     printf("%d년 실질 수령액 : %.0lf\n", year+1,income-tax);//소수점 자리는 출력하지 않는다.
 }
 
