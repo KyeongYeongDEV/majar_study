@@ -34,7 +34,7 @@ app.get('/',(req,res)=>{
 });
 
 app.post('/email_post', (req,res)=>{
-    console.log(req.body.email)
+    console.log(req.body.email) 
     //res.send("Welcome ! " + req.body.email);
     res.render('email.ejs', {'email': req.body.email});
 })
