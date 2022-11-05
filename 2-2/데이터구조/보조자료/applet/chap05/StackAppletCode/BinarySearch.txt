@@ -1,8 +1,0 @@
-void push(StackType *s, element item)
-{ 
-    if( is_full(s) ) { 
-         fprintf(stderr,"stack overflow\n");
-         return; 		 
-    } 
-    else s->stack[++(s->top)] = item; 
-}
