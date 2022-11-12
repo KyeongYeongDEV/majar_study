@@ -26,7 +26,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     JTextField password = new JTextField(8);
     JButton login_btn = new JButton("Login");
     JButton sign_btn = new JButton("회원가입");
-
+/*
     public void id() {
         try {
             String sql = "INSERT INTO member";
@@ -37,6 +37,10 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             e.printStackTrace();
         }
     }
+
+ */
+
+
     //메인 pane 오른쪽팬
     JPanel mainright_pane = new JPanel();
 
@@ -614,8 +618,8 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     }
     //메인메소드
     public static Connection con =null;
-    public static String server = "localhost:3306"; // MySQL 서버 주소
-    public static String database = "local"; // MySQL DATABASE 이름
+    public static String server = "127.0.0.1:3306"; // MySQL 서버 주소
+    public static String database = "Java_project"; // MySQL DATABASE 이름
     public static String user_name = "root"; //  MySQL 서버 아이디
     public static String password5 = "dkdldnjs7098"; // MySQL 서버 비밀번호
     public static  Statement stmt;
