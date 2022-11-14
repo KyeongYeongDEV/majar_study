@@ -29,16 +29,16 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
 
 
-    public void id() {
-        try {
-            String sql = "INSERT INTO member";
-            sql += " VALUES (4, 'ㅁㄴㅇㄹ', '제발시발아')";
-            stmt.executeUpdate(sql);
-            System.out.println("성공!!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void id() {
+//        try {
+//            String sql = "INSERT INTO member";
+//            sql += " VALUES (4, 'ㅁㄴㅇㄹ', '제발시발아')";
+//            stmt.executeUpdate(sql);
+//            System.out.println("성공!!");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     //메인상단 pane 오른쪽팬

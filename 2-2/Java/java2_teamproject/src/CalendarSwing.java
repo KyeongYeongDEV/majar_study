@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.*;
-import java.util.Calendar;
+import java.util.*;
 
 
 public class CalendarSwing extends JFrame implements  ItemListener, ActionListener {
@@ -26,19 +26,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     JTextField password = new JTextField(8);
     JButton login_btn = new JButton("Login");
     JButton sign_btn = new JButton("회원가입");
-/*
-    public void id() {
-        try {
-            String sql = "INSERT INTO member";
-            sql += " VALUES (4, 'ㅁㄴㅇㄹ', '제발시발아')";
-            stmt.executeUpdate(sql);
-            System.out.println("성공!!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
- */
 
 
     //메인 pane 오른쪽팬
@@ -48,6 +36,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     JPanel west_pane = new JPanel(new GridLayout(8, 1));
 
     //db문
+
 
 
 
@@ -95,7 +84,9 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     JButton change_cancel = new JButton("취소");
     JButton change_complet = new JButton("완료");
     JButton change = new JButton("수정");
-    String[] todo_list = {"청소하기","빨래하기","운동하기","밥먹기","술먹기","과제하기"};
+//    String[] todo_list = {"청소하기","빨래하기","운동하기","밥먹기","술먹기","과제하기"};
+    String[] todo_list;
+    int todoSize=0;
     JTextField []change_list=new JTextField[6];
 
 
@@ -394,7 +385,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         todo_label.setBorder(BorderFactory.createEmptyBorder(50 , 0, 50 , 0));
         east_pane.add(todo_label);
         //쭉 추가로 나열하는 반복문
-        for(int i=0;i<6;i++){
+        for(int i=0;i<todoSize;i++){
             JLabel l = new JLabel((i+1) + todo_list[i]);
             l.setFont(new Font("Dialog",Font.PLAIN,15));
             l.setHorizontalAlignment(SwingConstants.CENTER);
@@ -409,6 +400,16 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     }
 
     //오른쪽-할일 목록 수정
+    public void getTodo() {
+        try {
+            String sql = "SELECT * FROM post WHERE";
+            sql+="post_year = '2022' AND post_month = '11' AND post_day = '1'";
+            stmt.executeUpdate(sql);
+            System.out.println("성공!!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public void changeTodo(){
         east_pane.removeAll();
         //할일 레이아웃 기본 설정
@@ -447,6 +448,13 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         p.add(change_cancel);
         east_pane.add(p);
     }
+
+//    String sql = "INSERT INTO member";
+//    sql += " VALUES (4, 'ㅁㄴㅇㄹ', '제발')";
+//            stmt.executeUpdate(sql);
+//            System.out.println("성공!!");
+
+
 
     //날짜설정
     public void setDay(){
