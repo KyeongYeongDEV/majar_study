@@ -1,12 +1,11 @@
 import com.mysql.jdbc.Connection;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.desktop.SystemEventListener;
+import java.awt.event.*;
 import java.sql.*;
 import java.util.*;
 
@@ -57,6 +56,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     //그룹보기pane
     JPanel groupView_pane = new JPanel(new GridLayout(9,1));
     JComboBox<String> group_combo = new JComboBox<String>();
+
     JList<String> person_List = new JList<String>();
     JButton group_manage=new JButton("그룹 관리");
     JButton group_exit=new JButton("나가기");
@@ -84,10 +84,13 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     JButton change_cancel = new JButton("취소");
     JButton change_complet = new JButton("완료");
     JButton change = new JButton("수정");
+    //Todo 여기부터 변경
 //    String[] todo_list = {"청소하기","빨래하기","운동하기","밥먹기","술먹기","과제하기"};
     Vector<String> todo_list ;
+    String selectGroup,selectYear,selectMonth, selectDay;
 
-    JTextField []change_list=new JTextField[6];
+    JTextField []change_list;
+    //Todo 여기 변경
 
 
     //아래쪽 pane
@@ -367,18 +370,28 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
         west_pane.setBackground(Color.cyan);
     }
-    //오른쪽-할일 목록 수정
-    public void getTodo() throws SQLException {
+    //오른쪽-할일 가져오기
+    public void getTodo() throws SQLException { //디비에서 할 일 불러옴
         todo_list = new Vector<String>();
 
         try {
-//            String sql = "SELECT * FROM post WHERE";
-//            sql+="post_year = '2022' AND post_month = '11' AND post_day = '1'";
+            String sql = "SELECT * FROM post ";
+            //ToDo sql문 수정해보기
+           // sql+="WHERE + post_year = ' selectYear' AND post_month = '11' AND post_day = '1'";
 
-            ResultSet Rs = stmt.executeQuery("SELECT * FROM post");
+            ResultSet Rs = stmt.executeQuery(sql);
+//ToDo 큰따옴표 안에 내용은 테이블 row명  g("post_team").equals("아자아자"))//아자아자대신 selectGroup
+            while(Rs.next()){ //조건 문 걸어서 년 월 일 맞다면 포스트 저장하기
+                //ToDO 조건문만 수정하기
 
-            while(Rs.next()){
-                todo_list.add(Rs.getString("post_text"));
+                if(  Rs.getString("post_day").equals(selectDay)&&
+                        Rs.getString("post_year").equals(selectYear)&&
+                        Rs.getString("post_month").equals(selectMonth)&&
+                        Rs.getString("post_team").equals("아자아자"))
+                {
+                    todo_list.add(Rs.getString("post_text"));
+                    System.out.println("들어감");
+                }
             }
 
             System.out.println("성공!!");
@@ -386,43 +399,12 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             e.printStackTrace();
         }
     }
-   //오른쪽-할일목록
-    public void setTodo() throws SQLException {
-        east_pane.removeAll();
-        //할일 레이아웃 기본 설정
-        east_pane.setSize(100,100);
-        JLabel east_l = new JLabel();
-        east_pane.add(east_l);
-        east_l.setBorder(BorderFactory.createEmptyBorder(15 , 30, 0 , 220));
-        east_pane.setBackground(Color.cyan);
-
-        //할일 레이아웃 라벨추가
-        getTodo();
-        JLabel todo_label = new JLabel("이 날의 할일");
-        todo_label.setHorizontalAlignment(SwingConstants.CENTER);
-        todo_label.setFont(new Font("Dialog",Font.BOLD,20));
-        todo_label.setBorder(BorderFactory.createEmptyBorder(50 , 0, 50 , 0));
-        east_pane.add(todo_label);
-        //쭉 추가로 나열하는 반복문
-        //ToDo 반복순 범위 수정
-        for(int i=0;i<todo_list.size();i++){
-            JLabel l = new JLabel((i+1) + todo_list.get(i));
-            l.setFont(new Font("Dialog",Font.PLAIN,15));
-            l.setHorizontalAlignment(SwingConstants.CENTER);
-            east_pane.add(l);
-        }
-        JPanel p =new JPanel(new FlowLayout());
-        p.setBackground(Color.cyan);
-        change.addActionListener(this);
-        change.setPreferredSize(new Dimension(80,30));
-        p.add(change);
-        east_pane.add(p);
-    }
 
 
 
 
-    public void changeTodo(){
+
+    public void changeTodo(){ //수정 버튼
         east_pane.removeAll();
         //할일 레이아웃 기본 설정
         east_pane.setSize(100,100);
@@ -435,9 +417,11 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         todo_label.setFont(new Font("Dialog",Font.BOLD,20));
         todo_label.setBorder(BorderFactory.createEmptyBorder(50 , 0, 50 , 0));
         east_pane.add(todo_label);
-
+        //ToDO 변경됨
+        int size = todo_list.size();
+        change_list = new JTextField[size];
         //쭉 추가로 나열하는 반복문
-        for(int i=0;i<6;i++){
+        for(int i=0;i<todo_list.size();i++){
             JPanel p = new JPanel(new FlowLayout());
             JLabel l = new JLabel(i+". ");
             l.setFont(new Font("Dialog",Font.PLAIN,15));
@@ -461,7 +445,42 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         east_pane.add(p);
     }
 
+    //오른쪽-할일목록
+    public void setTodo() throws SQLException { //다시 그리기
+        east_pane.removeAll();
+        //할일 레이아웃 기본 설정
+        east_pane.setSize(100,100);
+        JLabel east_l = new JLabel();
+        east_pane.add(east_l);
+        east_l.setBorder(BorderFactory.createEmptyBorder(15 , 30, 0 , 220));
+        east_pane.setBackground(Color.cyan);
 
+        //할일 레이아웃 라벨추가
+        //ToDo
+        getTodo(); //여기에서 할 일 불러옴
+
+        JLabel todo_label = new JLabel("이 날의 할일");
+        todo_label.setHorizontalAlignment(SwingConstants.CENTER);
+        todo_label.setFont(new Font("Dialog",Font.BOLD,20));
+        todo_label.setBorder(BorderFactory.createEmptyBorder(50 , 0, 50 , 0));
+        east_pane.add(todo_label);
+        //쭉 추가로 나열하는 반복문
+
+        //ToDo
+        //화면에 나열해줌
+        for(int i=0;i<todo_list.size();i++){
+            JLabel l = new JLabel((i+1) + todo_list.get(i));
+            l.setFont(new Font("Dialog",Font.PLAIN,15));
+            l.setHorizontalAlignment(SwingConstants.CENTER);
+            east_pane.add(l);
+        }
+        JPanel p =new JPanel(new FlowLayout());
+        p.setBackground(Color.cyan);
+        change.addActionListener(this);
+        change.setPreferredSize(new Dimension(80,30));
+        p.add(change);
+        east_pane.add(p);
+    }
 
 
     //날짜설정
@@ -481,6 +500,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         //날씨추가
         for(int day=1; day<=lastDay; day++){
             JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br> test </html>" );//라벨선언해주는데 String.value 는 형변환
+
             lbl.setFont(fnt);
             lbl.setHorizontalAlignment(SwingConstants.LEFT);
             lbl.setVerticalAlignment(SwingConstants.TOP);
@@ -492,6 +512,28 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             lbl.setContentAreaFilled(false);
             lbl.setBorder(new LineBorder(Color.black,1,false));
             dayPane.setBackground(Color.white);
+            lbl.addActionListener(new ActionListener() {
+                @Override //8<
+                public void actionPerformed(ActionEvent e) {
+                    selectGroup = group_combo.getSelectedItem().toString();//그룹 콤버박스
+                    selectYear = yearCombo.getSelectedItem().toString();
+                    selectMonth = monthCombo.getSelectedItem().toString();
+
+                    String tmpDay = lbl.getText().substring(7,8);
+                    if(tmpDay.equals("<")){
+                        selectDay =  lbl.getText().substring(6,7);
+                    }else{
+                        selectDay =  lbl.getText().substring(6,8);
+                    }
+
+
+                    try {
+                        setTodo();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
             dayPane.add(lbl);
         }
     }
