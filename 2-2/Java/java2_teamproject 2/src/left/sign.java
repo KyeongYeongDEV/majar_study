@@ -13,7 +13,7 @@ public class sign {
 
         JLabel west_l = new JLabel();
         CalendarSwing.west_pane.add(west_l);
-        west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 211));
+        west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 225));
 
         //회원가입 타이틀, 프레임공간 설정
         JLabel sign_label = new JLabel("회원가입");

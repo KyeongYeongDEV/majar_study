@@ -11,7 +11,7 @@ public class group {
         //그룹 정보 타이틀 및 프레임 크기 설정
         JPanel group_top = new JPanel(new GridLayout(2,1));
         JLabel group_title = new JLabel("그룹 정보");
-        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 60));
+        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 90));
         group_title.setHorizontalAlignment(SwingConstants.CENTER);
         group_title.setFont(new Font("Dialog",Font.BOLD,25));
         group_top.add(group_title);
@@ -98,7 +98,7 @@ public class group {
 
         //그룹관리프레임 제목
         JLabel group_title = new JLabel("그룹 설정");
-        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 60));
+        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 90));
         group_title.setHorizontalAlignment(SwingConstants.CENTER);
         group_title.setFont(new Font("Dialog",Font.BOLD,25));
         group_manage_pane.add(group_title);

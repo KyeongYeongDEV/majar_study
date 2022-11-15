@@ -6,8 +6,12 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
+
+import com.mysql.jdbc.Statement;
 import left.*;
 import right.*;
 
@@ -27,18 +31,6 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static JButton login_btn = new JButton("Login");
     public static JButton sign_btn = new JButton("회원가입");
 
-
-
-//    public void id() {
-//        try {
-//            String sql = "INSERT INTO member";
-//            sql += " VALUES (4, 'ㅁㄴㅇㄹ', '제발시발아')";
-//            stmt.executeUpdate(sql);
-//            System.out.println("성공!!");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 
     //메인상단 pane 오른쪽팬
@@ -91,9 +83,12 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static JButton change_complet = new JButton("완료");//오늘할일 저장->보기페이지로 전환
     public static JButton change_add = new JButton("추가");//오늘할일 추가->보기페이지로 전환
     public static JButton change = new JButton("수정");//오늘할일 수정페이지로 전환
+    //ToDo 여기부터
     public static JTextField []change_list=new JTextField[7];//오늘할일 저장할 텍스트필드들
 
-    public static Vector<String> todo_v = new Vector<String>(); //오늘할일 저장할 벡터
+    public static Vector<String> todo_list ; //할 일을 저장해주는 벡터
+    public static String selectGroup,selectYear,selectMonth, selectDay; //버튼을 눌렀을 때 그룹 정보, 년, 월, 일 저장
+    //ToDo 여기까지
     public static int todoAdd_count = 0; //추가버튼 누를 떄 몇개인지 카운트
 
 
@@ -129,7 +124,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
     Container c = getContentPane();
 
-    public CalendarSwing() {
+    public CalendarSwing() throws SQLException {
         super("공유캘린터 자바 팀프로젝트");
 
         c.setLayout(new BorderLayout());
@@ -160,7 +155,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         main_topPane.add(BorderLayout.CENTER,title);
 
         //로그인 팬
-        JLabel id_l = new JLabel("                id : ");
+        JLabel id_l = new JLabel("            id : ");
         JLabel pw_l=new JLabel("password : ");
         JPanel id_p = new JPanel(new FlowLayout());
         id_p.setBackground(Color.pink);
@@ -204,14 +199,12 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         west_pane.setSize(100,100);
         JLabel west_l = new JLabel();
         west_pane.add(west_l);
-        west_l.setBorder(BorderFactory.createEmptyBorder(0 , 35, 0 , 210));
+        west_l.setBorder(BorderFactory.createEmptyBorder(0 , 35, 0 , 220));
         west_pane.setBackground(Color.cyan);
         c.add(BorderLayout.WEST,west_pane);
 
         //오른쪽pane
-        todo_v.add("청소하기");//임시값 넣었음 -> 버튼누르면 디비값 열리게 하면 될듯
-        todo_v.add("빨래하기");
-        todo_v.add("운동하기");
+
 
         for(int i=0;i<7;i++){
             change_list[i]=new JTextField(5); //그냥 텍필 재정의해주는 반복문
@@ -286,7 +279,8 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
         //날씨추가
         for(int day=1; day<=lastDay; day++){
-            JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br> test </html>" );//라벨선언해주는데 String.value 는 형변환
+            JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br> t</html>" );//라벨선언해주는데 String.value 는 형변환
+
             lbl.setFont(fnt);
             lbl.setHorizontalAlignment(SwingConstants.LEFT);
             lbl.setVerticalAlignment(SwingConstants.TOP);
@@ -298,6 +292,27 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             lbl.setContentAreaFilled(false);
             lbl.setBorder(new LineBorder(Color.black,1,false));
             dayPane.setBackground(Color.white);
+            lbl.addActionListener(new ActionListener() {
+                @Override //8<
+                public void actionPerformed(ActionEvent e) {
+                    selectGroup = group_combo.getSelectedItem().toString();//그룹 콤버박스
+                    selectYear = yearCombo.getSelectedItem().toString();
+                    selectMonth = monthCombo.getSelectedItem().toString();
+
+                    String tmpDay = lbl.getText().substring(7,8);
+                    if(tmpDay.equals("<")){
+                        selectDay =  lbl.getText().substring(6,7);
+                    }else{
+                        selectDay =  lbl.getText().substring(6,8);
+                    }
+                    try {
+                        todo.setTodo();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
+
             dayPane.add(lbl);
         }
     }
@@ -393,7 +408,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             west_pane.setSize(100,100);
             JLabel west_l = new JLabel();
             west_pane.add(west_l);
-            west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 210));
+            west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 220));
             west_pane.setBackground(Color.cyan);
         }
         else if(obj == sign_cancel){//회원가입취소
@@ -401,7 +416,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             west_pane.setSize(100,100);
             JLabel west_l = new JLabel();
             west_pane.add(west_l);
-            west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 210));
+            west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 220));
             west_pane.setBackground(Color.cyan);
         }
         else if(obj == groupBack_btn){//화면전환 그룹설정->그룹보기
@@ -423,22 +438,30 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         public void mouseClicked(MouseEvent e){
             JButton obj = (JButton) e.getSource();
             if (obj == change_add){//그룹추가
-                if(todoAdd_count+todo_v.size()<7){//벡터값 7개까지만 가능하도록
+                if(todoAdd_count+todo_list.size()<7){//벡터값 7개까지만 가능하도록
                     todoAdd_count++;//추가를 누르면 추가카운트수만큼 텍스트필드 추가댐
                     todo.changeTodo();
                 }
             }
             else if(obj == change_complet){//그룹수정저장
-                todo_v.removeAllElements();//완료누르면 벡터 초기화
+                todo_list.removeAllElements();//완료누르면 벡터 초기화
                 for(int i=0;i<7;i++){//저장할 텍스트필드배열이 7칸임
                     if(!change_list[i].getText().equals("")){//텍스트필드가 빈값이면 없다고 취급
-                        todo_v.add(change_list[i].getText());//텍필이 안비어있을 때만 벡터에 추가 유동적으로 벡터관리를 위해
+                        todo_list.add(change_list[i].getText());//텍필이 안비어있을 때만 벡터에 추가 유동적으로 벡터관리를 위해
                     }
                 }
-                todo.setTodo();
+                try {
+                    todo.setTodo();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
             else if(obj == change_cancel){//그룹수정취소소
-                todo.setTodo();
+                try {
+                    todo.setTodo();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
@@ -486,13 +509,12 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static String database = "Java_project"; // MySQL DATABASE 이름
     public static String user_name = "root"; //  MySQL 서버 아이디
     public static String password5 = "dkdldnjs7098"; // MySQL 서버 비밀번호
-    public static  Statement stmt;
+    public static Statement stmt;
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         con = (Connection) DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password5);
-        stmt = con.createStatement(); // Query 작업을 실행하기 위한 객체.
+        stmt = (Statement) con.createStatement(); // Query 작업을 실행하기 위한 객체.
 
 
 

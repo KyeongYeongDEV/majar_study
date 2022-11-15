@@ -390,11 +390,8 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                         Rs.getString("post_team").equals("아자아자"))
                 {
                     todo_list.add(Rs.getString("post_text"));
-                    System.out.println("들어감");
                 }
             }
-
-            System.out.println("성공!!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -403,8 +400,8 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
 
 
-
-    public void changeTodo(){ //수정 버튼
+//ToDo 할 일 수정
+    public void changeTodo(){
         east_pane.removeAll();
         //할일 레이아웃 기본 설정
         east_pane.setSize(100,100);
@@ -434,7 +431,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             p.setBackground(Color.cyan);
         }
         JPanel p =new JPanel(new FlowLayout());
-        p.setBackground(Color.white);
+        p.setBackground(Color.cyan);
         change_complet.addActionListener(this);
         change_complet.setPreferredSize(new Dimension(80,30));
         p.add(change_complet);
@@ -497,9 +494,9 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             dayPane.add(lbl);
         }
 
-        //날씨추가
+        //날짜추가
         for(int day=1; day<=lastDay; day++){
-            JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br> test </html>" );//라벨선언해주는데 String.value 는 형변환
+            JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br> t</html>" );//라벨선언해주는데 String.value 는 형변환
 
             lbl.setFont(fnt);
             lbl.setHorizontalAlignment(SwingConstants.LEFT);
