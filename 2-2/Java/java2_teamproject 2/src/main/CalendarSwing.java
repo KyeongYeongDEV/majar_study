@@ -7,10 +7,12 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
 
+import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import left.*;
 import right.*;
@@ -85,8 +87,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static JButton change = new JButton("수정");//오늘할일 수정페이지로 전환
     //ToDo 여기부터
     public static JTextField []change_list=new JTextField[7];//오늘할일 저장할 텍스트필드들
-
-    public static Vector<String> todo_list ; //할 일을 저장해주는 벡터
+    public static Vector<String> todo_list = new Vector<String>(); //할 일을 저장해주는 벡터
     public static String selectGroup,selectYear,selectMonth, selectDay; //버튼을 눌렀을 때 그룹 정보, 년, 월, 일 저장
     //ToDo 여기까지
     public static int todoAdd_count = 0; //추가버튼 누를 떄 몇개인지 카운트
@@ -293,7 +294,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             lbl.setBorder(new LineBorder(Color.black,1,false));
             dayPane.setBackground(Color.white);
             lbl.addActionListener(new ActionListener() {
-                @Override //8<
+                @Override //
                 public void actionPerformed(ActionEvent e) {
                     selectGroup = group_combo.getSelectedItem().toString();//그룹 콤버박스
                     selectYear = yearCombo.getSelectedItem().toString();
@@ -306,7 +307,9 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                         selectDay =  lbl.getText().substring(6,8);
                     }
                     try {
+                        east_pane.removeAll();
                         todo.setTodo();
+                        east_pane.repaint();
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -445,11 +448,50 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             }
             else if(obj == change_complet){//그룹수정저장
                 todo_list.removeAllElements();//완료누르면 벡터 초기화
+
+                //ToDo 누른 버트넹 해당하는 디비 전부 삭제
+                String sql = " DELETE FROM post " + " WHERE post_day = " +selectDay+ " AND post_month = "+selectMonth + " AND post_year = " + selectYear +" AND post_team = '" +selectGroup + "'" ;
+
+                Statement stmt = null;
+                try {
+                    stmt = (Statement) con.createStatement();
+                    int res = stmt.executeUpdate(sql);
+                    if(res > 0) {
+                        System.out.println("삭제 성공");
+                    }
+
+                } catch (SQLException err) {
+                    err.printStackTrace();
+                }
+
                 for(int i=0;i<7;i++){//저장할 텍스트필드배열이 7칸임
                     if(!change_list[i].getText().equals("")){//텍스트필드가 빈값이면 없다고 취급
                         todo_list.add(change_list[i].getText());//텍필이 안비어있을 때만 벡터에 추가 유동적으로 벡터관리를 위해
+                        //ToDo 디비에 그룹 날짜 년월일 내용 업데이트
+                        String emoji = "슬픔",
+                                curtime = "현재시간";
+                        //ToDo 테이블 명 변경
+                        sql =" INSERT INTO post VALUE('"+selectYear+"','" +selectMonth+"','"+selectDay+"','"+todo_list.get(i)+"','슬픔','"+selectGroup+"','22.11.14.17.50')";
+                      //  sql = "INSERT INTO post VALUE('" + selectYear +"','" + selectMonth +"','" + selectDay + "','emoji ','" + change_list[i]+ "','curtime')";
+                       //  sql = " INSERT INTO post('post_year', 'post_month', 'post_day', 'post_text','post_emoji','post_team','post_cur_time') VALUE ('" +selectYear +"', '" +  selectMonth  +"', '" +  selectDay +"', '" +  change_list[i].getText() +"', 'emoji', '" +  selectGroup +"', 'curtime')";
+
+                        stmt = null;
+                        try {
+                            stmt = (Statement) con.createStatement();
+                            int res = stmt.executeUpdate(sql);
+                            if(res > 0) {
+                                System.out.println("삽입 성공");
+                            }
+
+                        } catch (SQLException err) {
+                            err.printStackTrace();
+                        }
+
+
+
                     }
                 }
+
                 try {
                     todo.setTodo();
                 } catch (SQLException ex) {

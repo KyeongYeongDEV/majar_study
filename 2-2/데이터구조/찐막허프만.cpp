@@ -109,4 +109,5 @@ int main(){
     }
     
     makeHuffmanTree(node);
+    cout << node[1].left->left->ch;
 }

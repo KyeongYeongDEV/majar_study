@@ -12,7 +12,6 @@ int getIncome(){ //첫 연봉
 float getRate(float income){
     srand(time(0));
     int rate =  rand()%5+1; //랜덤값 1~5
-
     income += income * rate /100; //물가 인상률 계산 및 적용
 
     return income; 

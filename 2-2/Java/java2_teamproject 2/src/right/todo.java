@@ -8,11 +8,12 @@ import java.util.Vector;
 
 import main.*;
 
+import static main.CalendarSwing.east_pane;
 import static main.CalendarSwing.stmt;
 
 public class todo {
     public static void getTodo() throws SQLException { //디비에서 할 일 불러옴
-        CalendarSwing.todo_list = new Vector<String>();
+        CalendarSwing.todo_list.removeAllElements();
 
         try {
             String sql = "SELECT * FROM post ";
@@ -27,7 +28,7 @@ public class todo {
                 if(  Rs.getString("post_day").equals(CalendarSwing.selectDay)&&
                         Rs.getString("post_year").equals(CalendarSwing.selectYear)&&
                         Rs.getString("post_month").equals(CalendarSwing.selectMonth)&&
-                        Rs.getString("post_team").equals("아자아자"))//CalendarSwing.selectGroup
+                        Rs.getString("post_team").equals(CalendarSwing.selectGroup))//CalendarSwing.selectGroup
                 {
                     CalendarSwing.todo_list.add(Rs.getString("post_text"));
                 }
@@ -61,8 +62,8 @@ public class todo {
             CalendarSwing.east_pane.add(l);
         }
         JPanel p =new JPanel(new FlowLayout());
+        p.removeAll();
         p.setBackground(Color.cyan);
-
 
         CalendarSwing.change.setPreferredSize(new Dimension(80,30));
         p.add(CalendarSwing.change);//할일 목록 수정 페이지로 전환
