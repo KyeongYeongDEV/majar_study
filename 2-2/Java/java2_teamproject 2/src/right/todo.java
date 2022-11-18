@@ -11,25 +11,26 @@ import main.*;
 import static main.CalendarSwing.east_pane;
 import static main.CalendarSwing.stmt;
 
+
+
 public class todo {
     public static void getTodo() throws SQLException { //디비에서 할 일 불러옴
         CalendarSwing.todo_list.removeAllElements();
 
         try {
-            String sql = "SELECT * FROM post ";
-            //ToDo sql문 수정해보기
-            // sql+="WHERE + post_year = ' selectYear' AND post_month = '11' AND post_day = '1'";
+            //ToDO 디비 불러오기
+
+            String sql = "SELECT * FROM post ORDER BY idx ASC";
 
             ResultSet Rs = stmt.executeQuery(sql);
-//ToDo 큰따옴표 안에 내용은 테이블 row명  g("post_team").equals("아자아자"))//아자아자대신 selectGroup
             while(Rs.next()){ //조건 문 걸어서 년 월 일 맞다면 포스트 저장하기
-                //ToDO 조건문만 수정하기
 
-                if(  Rs.getString("post_day").equals(CalendarSwing.selectDay)&&
+                if(     Rs.getString("post_team").equals(CalendarSwing.selectGroup)&&
+                        Rs.getString("post_day").equals(CalendarSwing.selectDay)&&
                         Rs.getString("post_year").equals(CalendarSwing.selectYear)&&
-                        Rs.getString("post_month").equals(CalendarSwing.selectMonth)&&
-                        Rs.getString("post_team").equals(CalendarSwing.selectGroup))//CalendarSwing.selectGroup
+                        Rs.getString("post_month").equals(CalendarSwing.selectMonth))
                 {
+                    System.out.println("가져오기 성공");
                     CalendarSwing.todo_list.add(Rs.getString("post_text"));
                 }
             }
@@ -48,18 +49,20 @@ public class todo {
 
         getTodo();
         //할일 보기 제목 및 프레임 크기설정
-        JLabel todo_label = new JLabel("이 날의 할일");
+
+        JLabel todo_label = new JLabel("<html>"+CalendarSwing.selectMonth+"월 "+CalendarSwing.selectDay+"일<br>"+"이 날의 할 일 </html>");
         todo_label.setHorizontalAlignment(SwingConstants.CENTER);
         todo_label.setFont(new Font("Dialog",Font.BOLD,20));
         todo_label.setBorder(BorderFactory.createEmptyBorder(50 , 0, 50 , 0));
         CalendarSwing.east_pane.add(todo_label);
 
+        //todo JLabel을 CalenderSwing에 배열로 선언
         //쭉 추가로 나열하는 반복문(벡터값만큼만 반복)
         for(int i=0;i< CalendarSwing.todo_list.size(); i++){
-            JLabel l = new JLabel((i+1) + CalendarSwing.todo_list.get(i));
-            l.setFont(new Font("Dialog",Font.PLAIN,15));
-            l.setHorizontalAlignment(SwingConstants.CENTER);
-            CalendarSwing.east_pane.add(l);
+            CalendarSwing.l[i] = new JLabel((i+1) + CalendarSwing.todo_list.get(i));
+            CalendarSwing.l[i].setFont(new Font("Dialog",Font.PLAIN,15));
+            CalendarSwing.l[i].setHorizontalAlignment(SwingConstants.CENTER);
+            CalendarSwing.east_pane.add(CalendarSwing.l[i]);
         }
         JPanel p =new JPanel(new FlowLayout());
         p.removeAll();
@@ -78,7 +81,7 @@ public class todo {
         CalendarSwing.east_pane.add(east_l);
         east_l.setBorder(BorderFactory.createEmptyBorder(15 , 30, 15 , 210));
         //할일 수정 제목 및 프레임 크기 설정
-        JLabel todo_label = new JLabel("이 날의 할일");
+        JLabel todo_label = new JLabel("<html>"+CalendarSwing.selectMonth+"월 "+CalendarSwing.selectDay+"일<br>"+"이 날의 할 일 </html>");
         todo_label.setHorizontalAlignment(SwingConstants.CENTER);
         todo_label.setFont(new Font("Dialog",Font.BOLD,20));
         todo_label.setBorder(BorderFactory.createEmptyBorder(50 , 0, 50 , 0));

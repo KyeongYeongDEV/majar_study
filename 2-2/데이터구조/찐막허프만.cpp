@@ -107,7 +107,6 @@ int main(){
             insertMinHeap(node, heap);
         }
     }
-    
     makeHuffmanTree(node);
-    cout << node[1].left->left->ch;
+
 }

@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -16,7 +17,10 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import left.*;
 import right.*;
+//ToDo 추가
+import java.time.LocalDate; //현재 시간을 받아줌
 
+import static main.CalendarSwing.stmt;
 
 
 public class CalendarSwing extends JFrame implements  ItemListener, ActionListener {
@@ -88,16 +92,20 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     //ToDo 여기부터
     public static JTextField []change_list=new JTextField[7];//오늘할일 저장할 텍스트필드들
     public static Vector<String> todo_list = new Vector<String>(); //할 일을 저장해주는 벡터
-    public static String selectGroup,selectYear,selectMonth, selectDay; //버튼을 눌렀을 때 그룹 정보, 년, 월, 일 저장
+    public static String selectGroup,selectYear,selectMonth = "", selectDay=""; //버튼을 눌렀을 때 그룹 정보, 년, 월, 일 저장
+
+    public static JLabel[] l = new JLabel[7];
     //ToDo 여기까지
     public static int todoAdd_count = 0; //추가버튼 누를 떄 몇개인지 카운트
 
 
     //아래쪽 pane
     public static JPanel south_pane=new JPanel(new BorderLayout());
-    public static String []D_day = {"D-1","D-2","D-3","D-4","D-5","D-6","D-7"};
-    public static String []D_day_dummy = {"친구","회사","가족","학교","모임","연인","휴식"};
 
+    //ToDO 여기부터
+    public static Vector<String>D_day = new Vector<String>(7);
+    public static Vector<String>D_day_dummy= new Vector<String>(7);
+//ToDO 여기껴지 수정
 
 
     //캘린더 pane
@@ -207,14 +215,15 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         //오른쪽pane
 
 
-        for(int i=0;i<7;i++){
-            change_list[i]=new JTextField(5); //그냥 텍필 재정의해주는 반복문
+        for(int i=0; i<7; i++){
+            change_list[i]=new JTextField(10); //그냥 텍필 재정의해주는 반복문
         }
         todo.setTodo(); //오늘의 할일 프레임 호출
         c.add(BorderLayout.EAST,east_pane);
 
         //아래쪽pane
         setD_day(); //디데이 아래쪽에 호출
+
         c.add(BorderLayout.SOUTH,south_pane);
 
         c.add(BorderLayout.NORTH,main_topPane);//메인 상단에 pane추가
@@ -280,7 +289,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
         //날씨추가
         for(int day=1; day<=lastDay; day++){
-            JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br> t</html>" );//라벨선언해주는데 String.value 는 형변환
+            JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br></html>" );//라벨선언해주는데 String.value 는 형변환
 
             lbl.setFont(fnt);
             lbl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -294,6 +303,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             lbl.setBorder(new LineBorder(Color.black,1,false));
             dayPane.setBackground(Color.white);
             lbl.addActionListener(new ActionListener() {
+                //todo 선택된 그룹과 년월일을 저장
                 @Override //
                 public void actionPerformed(ActionEvent e) {
                     selectGroup = group_combo.getSelectedItem().toString();//그룹 콤버박스
@@ -348,18 +358,80 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     }
 
     //아래쪽 D-daypane
+    //ToDO 디데이 수정
     public void setD_day(){
+        System.out.println("1");
         JPanel D_dayTitle = new JPanel(new GridLayout(1,7));
-        for(int i=0;i<D_day.length; i++){
-            JLabel lbl = new JLabel(D_day[i], JLabel.CENTER);
+
+        //Todo 현재 시간 저장
+        LocalDate now = LocalDate.now();
+        int curYear = now.getYear();
+        int curMonth =now.getMonthValue();
+        int curDay = now.getDayOfMonth();
+
+
+        if(selectGroup == null){ //초기 화면에는 그룹이 없음
+            D_day_dummy.add(+ curYear + "년 "+curMonth+ "월 "+ curDay+"일");
+            D_day.add("D-day");
+
+        }else{
+            System.out.println("들어옴");
+
+            //ToDo 디데이 저장하기
+
+            try {
+                String sql = "SELECT * FROM post ORDER BY post_year , post_month, post_day, idx ASC"; //년 월 일 기준으로 정렬한 채 가져오기
+
+                ResultSet Rs = stmt.executeQuery(sql);
+
+                while(Rs.next()){
+
+                    String postTeam  = Rs.getString("post_team");
+
+                    int postYear = Integer.parseInt(Rs.getString("post_year"));
+                    int postMonth = Integer.parseInt(Rs.getString("post_month"));
+                    int postDay = Integer.parseInt(Rs.getString("post_day"));
+
+                    if(postTeam.equals(CalendarSwing.selectGroup) &&//선택된 그룹과 같은 그룹이고
+                            postYear >= curYear && postMonth >= curMonth && postDay >= curDay)  //년 월 일이 현재와 같거나 크다면
+                    { //ToDo
+
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(postYear,  postMonth, postDay);
+
+                        long dDay = cal.getTimeInMillis(); // 1000분의 1초로 계산
+                        long nowDay = System.currentTimeMillis();
+                        long result = dDay - nowDay;// 남은 시간: ms : 1000분의 1초 단위
+
+                        long dayTemp = (result / 1000 / 60 / 60 / 24) -30; //디데이 날짜 기준 계산
+
+                        if(dayTemp == 0){
+                            D_day.add("D-day");
+                        }else{
+                            D_day.add("D-"+Long.toString(dayTemp)); //디데이 저장
+                        }
+
+                        D_day_dummy.add(Rs.getString("post_text")); //내용 저장
+
+                    }
+                    if(D_day.size() == 7)break; //7개가 저장이 된다면 있다면 종료
+                }
+                south_pane.repaint();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for(int i=0;i<D_day.size(); i++){
+            JLabel lbl = new JLabel(D_day.get(i), JLabel.CENTER);
             lbl.setFont(fnt);
             D_dayTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
             lbl.setForeground(Color.red);
             D_dayTitle.add(lbl);
         }
         JPanel D_daycontent = new JPanel(new GridLayout(1,7));
-        for(int i=0;i<D_day.length;i++){
-            JLabel lbl = new JLabel(D_day_dummy[i],JLabel.CENTER);
+        for(int i=0;i<D_day.size();i++){
+            JLabel lbl = new JLabel(D_day_dummy.get(i),JLabel.CENTER);
             lbl.setFont(fnt);
             D_daycontent.setBorder(BorderFactory.createEmptyBorder(15, 0, 20, 0));
             lbl.setBackground(Color.white);
@@ -432,7 +504,13 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         }
         else if(obj == login_btn){//로그인하기
             group.setgroupView();
+
+            //ToDo 로그인이 됐을 때 - 그룹 콤버박스에 있는 그룹으로 정보 추가인
+            selectGroup = group_combo.getSelectedItem().toString();
+            setD_day();
             west_pane.repaint();
+
+            //south_pane.repaint();
         }
     }
 
@@ -446,13 +524,11 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                     todo.changeTodo();
                 }
             }
-            else if(obj == change_complet){//그룹수정저장
-                todo_list.removeAllElements();//완료누르면 벡터 초기화
-
-                //ToDo 누른 버트넹 해당하는 디비 전부 삭제
-                String sql = " DELETE FROM post " + " WHERE post_day = " +selectDay+ " AND post_month = "+selectMonth + " AND post_year = " + selectYear +" AND post_team = '" +selectGroup + "'" ;
-
-                Statement stmt = null;
+            // 완료버튼
+            else if(obj == change_complet){
+                //ToDo 누른 버튼에 해당하는 그룹, 날짜의 포스트 row 다 삭제
+                String sql = " DELETE FROM post " + " WHERE post_day = " +selectDay+ " AND post_month = "+selectMonth
+                        + " AND post_year = " + selectYear +" AND post_team = '" +selectGroup + "'";
                 try {
                     stmt = (Statement) con.createStatement();
                     int res = stmt.executeUpdate(sql);
@@ -464,34 +540,27 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                     err.printStackTrace();
                 }
 
-                for(int i=0;i<7;i++){//저장할 텍스트필드배열이 7칸임
-                    if(!change_list[i].getText().equals("")){//텍스트필드가 빈값이면 없다고 취급
-                        todo_list.add(change_list[i].getText());//텍필이 안비어있을 때만 벡터에 추가 유동적으로 벡터관리를 위해
-                        //ToDo 디비에 그룹 날짜 년월일 내용 업데이트
-                        String emoji = "슬픔",
-                                curtime = "현재시간";
-                        //ToDo 테이블 명 변경
-                        sql =" INSERT INTO post VALUE('"+selectYear+"','" +selectMonth+"','"+selectDay+"','"+todo_list.get(i)+"','슬픔','"+selectGroup+"','22.11.14.17.50')";
-                      //  sql = "INSERT INTO post VALUE('" + selectYear +"','" + selectMonth +"','" + selectDay + "','emoji ','" + change_list[i]+ "','curtime')";
-                       //  sql = " INSERT INTO post('post_year', 'post_month', 'post_day', 'post_text','post_emoji','post_team','post_cur_time') VALUE ('" +selectYear +"', '" +  selectMonth  +"', '" +  selectDay +"', '" +  change_list[i].getText() +"', 'emoji', '" +  selectGroup +"', 'curtime')";
+                for(int i=0; i <7; i++){
+                    if(change_list[i].getText().equals("")) continue; //빈칸이면 그냥 건너 뛰기
 
-                        stmt = null;
-                        try {
-                            stmt = (Statement) con.createStatement();
-                            int res = stmt.executeUpdate(sql);
-                            if(res > 0) {
-                                System.out.println("삽입 성공");
-                            }
-
-                        } catch (SQLException err) {
-                            err.printStackTrace();
+                    //텍박 앞에 숫자 긁어와서 idx column에 쓰기
+                    sql =" INSERT INTO post VALUE('"+selectYear+"','" +selectMonth+"','"+selectDay+"','"+change_list[i].getText()+"','"+selectGroup+"','"+l[i].getText()+"')";
+                    stmt = null;
+                    try {
+                        stmt = (Statement) con.createStatement();
+                        int res = stmt.executeUpdate(sql);
+                        if(res > 0) {
+                            System.out.println("삽입 성공");
                         }
 
-
-
+                    } catch (SQLException err) {
+                        err.printStackTrace();
                     }
-                }
 
+                    //텍박에 있는 텍스트 날짜 그룹 디비에 insert
+                }
+                //ToDo 수정이 완료되면 디데이 수정
+                setD_day();
                 try {
                     todo.setTodo();
                 } catch (SQLException ex) {
@@ -562,5 +631,4 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
         new CalendarSwing();
     }
-
 }
