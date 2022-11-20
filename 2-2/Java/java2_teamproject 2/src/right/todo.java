@@ -30,7 +30,6 @@ public class todo {
                         Rs.getString("post_year").equals(CalendarSwing.selectYear)&&
                         Rs.getString("post_month").equals(CalendarSwing.selectMonth))
                 {
-                    System.out.println("가져오기 성공");
                     CalendarSwing.todo_list.add(Rs.getString("post_text"));
                 }
             }
@@ -59,7 +58,7 @@ public class todo {
         //todo JLabel을 CalenderSwing에 배열로 선언
         //쭉 추가로 나열하는 반복문(벡터값만큼만 반복)
         for(int i=0;i< CalendarSwing.todo_list.size(); i++){
-            CalendarSwing.l[i] = new JLabel((i+1) + CalendarSwing.todo_list.get(i));
+            CalendarSwing.l[i] = new JLabel((i+1)+". " + CalendarSwing.todo_list.get(i));
             CalendarSwing.l[i].setFont(new Font("Dialog",Font.PLAIN,15));
             CalendarSwing.l[i].setHorizontalAlignment(SwingConstants.CENTER);
             CalendarSwing.east_pane.add(CalendarSwing.l[i]);
@@ -103,6 +102,7 @@ public class todo {
 
         //추가버튼 누르면 빈 텍스트필드를 추가하고 화면 새로고침함
         for(int i=0;i<CalendarSwing.todoAdd_count;i++){
+
             JPanel p = new JPanel(new FlowLayout());
             JLabel l = new JLabel((i+CalendarSwing.todo_list.size()+1)+". ");
             l.setFont(new Font("Dialog",Font.PLAIN,15));

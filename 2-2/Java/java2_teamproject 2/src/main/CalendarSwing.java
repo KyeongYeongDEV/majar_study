@@ -90,11 +90,11 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static JButton change_add = new JButton("추가");//오늘할일 추가->보기페이지로 전환
     public static JButton change = new JButton("수정");//오늘할일 수정페이지로 전환
     //ToDo 여기부터
-    public static JTextField []change_list=new JTextField[7];//오늘할일 저장할 텍스트필드들
+    public static JTextField []change_list= {null, null, null, null, null, null, null};//오늘할일 저장할 텍스트필드들
     public static Vector<String> todo_list = new Vector<String>(); //할 일을 저장해주는 벡터
     public static String selectGroup,selectYear,selectMonth = "", selectDay=""; //버튼을 눌렀을 때 그룹 정보, 년, 월, 일 저장
-
     public static JLabel[] l = new JLabel[7];
+    public static int changSize =0;
     //ToDo 여기까지
     public static int todoAdd_count = 0; //추가버튼 누를 떄 몇개인지 카운트
 
@@ -213,8 +213,6 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         c.add(BorderLayout.WEST,west_pane);
 
         //오른쪽pane
-
-
         for(int i=0; i<7; i++){
             change_list[i]=new JTextField(10); //그냥 텍필 재정의해주는 반복문
         }
@@ -360,7 +358,6 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     //아래쪽 D-daypane
     //ToDO 디데이 수정
     public void setD_day(){
-        System.out.println("1");
         JPanel D_dayTitle = new JPanel(new GridLayout(1,7));
 
         //Todo 현재 시간 저장
@@ -369,19 +366,16 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         int curMonth =now.getMonthValue();
         int curDay = now.getDayOfMonth();
 
-
         if(selectGroup == null){ //초기 화면에는 그룹이 없음
             D_day_dummy.add(+ curYear + "년 "+curMonth+ "월 "+ curDay+"일");
             D_day.add("D-day");
 
         }else{
-            System.out.println("들어옴");
-
             //ToDo 디데이 저장하기
-
             try {
-                String sql = "SELECT * FROM post ORDER BY post_year , post_month, post_day, idx ASC"; //년 월 일 기준으로 정렬한 채 가져오기
-
+//                String sql = "SELECT * FROM post ORDER BY post_year , post_month, post_day, idx ASC"; //년 월 일 기준으로 정렬한 채 가져오기
+                  String sql = "SELECT * FROM post WHERE post_team = '" +selectGroup +"' AND post_year >= '"+selectYear +"' AND post_month >= '" + selectDay +"' AND post_day = '" + selectDay+"'"
+                          + " ORDER BY post_year , post_month, post_day, idx ASC";
                 ResultSet Rs = stmt.executeQuery(sql);
 
                 while(Rs.next()){
@@ -395,7 +389,6 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                     if(postTeam.equals(CalendarSwing.selectGroup) &&//선택된 그룹과 같은 그룹이고
                             postYear >= curYear && postMonth >= curMonth && postDay >= curDay)  //년 월 일이 현재와 같거나 크다면
                     { //ToDo
-
                         Calendar cal = Calendar.getInstance();
                         cal.set(postYear,  postMonth, postDay);
 
@@ -509,6 +502,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             selectGroup = group_combo.getSelectedItem().toString();
             setD_day();
             west_pane.repaint();
+            south_pane.repaint();
 
             //south_pane.repaint();
         }
@@ -540,21 +534,37 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                     err.printStackTrace();
                 }
 
-                for(int i=0; i <7; i++){
-                    if(change_list[i].getText().equals("")) continue; //빈칸이면 그냥 건너 뛰기
+                int curPostCnt = todoAdd_count+todo_list.size(); //현재 텍스트 필드의 개수
+                for(int i=0; i < curPostCnt; i++){
+                    if(change_list[i] != null && change_list[i].getText().equals("")) continue; //빈칸이면 그냥 건너 뛰기
+                    else {
+                        System.out.print("여기는 아이입니다. " + i);
+                        sql = "";
+                        // 현재 시간
+                        LocalTime now = LocalTime.now();
+                        // 시, 분, 초 구하기
+                        int hour = now.getHour();
+                        int minute = now.getMinute();
+                        int second = now.getSecond();
+                        String curTime = "" + selectYear + selectMonth + selectDay + hour + minute + second;
+                        //텍박 앞에 숫자 긁어와서 idx column에 쓰기
 
-                    //텍박 앞에 숫자 긁어와서 idx column에 쓰기
-                    sql =" INSERT INTO post VALUE('"+selectYear+"','" +selectMonth+"','"+selectDay+"','"+change_list[i].getText()+"','"+selectGroup+"','"+l[i].getText()+"')";
-                    stmt = null;
-                    try {
-                        stmt = (Statement) con.createStatement();
-                        int res = stmt.executeUpdate(sql);
-                        if(res > 0) {
-                            System.out.println("삽입 성공");
+                        sql = " INSERT INTO post VALUE('" + selectYear + "','" + selectMonth + "','" + selectDay + "','" + change_list[i].getText() +
+                                "','" + selectGroup + "','" + i + curTime + "')";
+
+                        System.out.println(sql);
+
+                        stmt = null;
+                        try {
+                            stmt = (Statement) con.createStatement();
+                            int res = stmt.executeUpdate(sql);
+                            if (res > 0) {
+                                System.out.println("삽입 성공");
+                            }
+
+                        } catch (SQLException err) {
+                            err.printStackTrace();
                         }
-
-                    } catch (SQLException err) {
-                        err.printStackTrace();
                     }
 
                     //텍박에 있는 텍스트 날짜 그룹 디비에 insert
@@ -567,7 +577,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                     throw new RuntimeException(ex);
                 }
             }
-            else if(obj == change_cancel){//그룹수정취소소
+            else if(obj == change_cancel){//그룹수정취소
                 try {
                     todo.setTodo();
                 } catch (SQLException ex) {
@@ -576,8 +586,6 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             }
         }
     }
-
-
 
 
     private void setDayReset(){ //날짜 초기화 메소드
