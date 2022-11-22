@@ -8,9 +8,7 @@ import java.util.Vector;
 
 import main.*;
 
-import static main.CalendarSwing.east_pane;
-import static main.CalendarSwing.stmt;
-
+import static main.CalendarSwing.*;
 
 
 public class todo {
@@ -20,18 +18,13 @@ public class todo {
         try {
             //ToDO 디비 불러오기
 
-            String sql = "SELECT * FROM post ORDER BY idx ASC";
-
+            //String sql = "SELECT * FROM post ORDER BY idx ASC";
+            String sql = "SELECT * FROM post WHERE post_team = '" + selectGroup
+                    +"' AND post_year = '" + selectYear +"' AND post_month = '" +selectMonth + "' AND post_day = '" + selectDay
+                    + "' ORDER BY idx ASC";
             ResultSet Rs = stmt.executeQuery(sql);
             while(Rs.next()){ //조건 문 걸어서 년 월 일 맞다면 포스트 저장하기
-
-                if(     Rs.getString("post_team").equals(CalendarSwing.selectGroup)&&
-                        Rs.getString("post_day").equals(CalendarSwing.selectDay)&&
-                        Rs.getString("post_year").equals(CalendarSwing.selectYear)&&
-                        Rs.getString("post_month").equals(CalendarSwing.selectMonth))
-                {
                     CalendarSwing.todo_list.add(Rs.getString("post_text"));
-                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

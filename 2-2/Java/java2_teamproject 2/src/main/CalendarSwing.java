@@ -24,26 +24,25 @@ import static main.CalendarSwing.stmt;
 
 
 public class CalendarSwing extends JFrame implements  ItemListener, ActionListener {
-    public static Font fnt = new Font("굴림체",Font.BOLD, 20);
-    public static Font title_fnt = new Font("굴림체",Font.BOLD,40);
+    public static Font fnt = new Font("굴림체", Font.BOLD, 20);
+    public static Font title_fnt = new Font("굴림체", Font.BOLD, 40);
 
     //메인 pane
     public static JPanel main_topPane = new JPanel(new BorderLayout());
 
     //메인 pane에 login 팬
-    public static JPanel login_pane=new JPanel(new BorderLayout());
+    public static JPanel login_pane = new JPanel(new BorderLayout());
     public static JTextField id = new JTextField(8);
     public static JTextField password = new JTextField(8);
     public static JButton login_btn = new JButton("Login");
     public static JButton sign_btn = new JButton("회원가입");
 
 
-
     //메인상단 pane 오른쪽팬
     public static JPanel mainright_pane = new JPanel();
 
     //왼쪽 pane
-    public static JPanel west_pane = new JPanel(new GridLayout(0,1));
+    public static JPanel west_pane = new JPanel(new GridLayout(0, 1));
 
     //회원가입
     public static JTextField sign_id = new JTextField(5); //회원가입 id
@@ -60,10 +59,9 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static JLabel group_name = new JLabel("학교"); //그룹이름
     public static JLabel group_code = new JLabel("inje"); //그룹코드
     public static JList<String> person_List = new JList<String>();//그룹원 리스트
-    public static JButton group_manage=new JButton("그룹 관리");// 그룹관리페이지로(groupManage)
-    public static JButton group_exit=new JButton("그룹 탈퇴");//그룹나가기 추후 구현필요
+    public static JButton group_manage = new JButton("그룹 관리");// 그룹관리페이지로(groupManage)
+    public static JButton group_exit = new JButton("그룹 탈퇴");//그룹나가기 추후 구현필요
     public static Vector<String> group_v = new Vector<String>(); //그룹원리스트에 추가될 벡터
-
 
 
     //그룹관리pane
@@ -83,28 +81,28 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static JButton groupBack_btn = new JButton("뒤로가기");//그룹뷰 페이지로 전환
 
     //할일목록 pane
-    public static JPanel east_pane=new JPanel(new GridLayout(10,1)); //오른쪽pane ->오늘할일,추가 등등 페이지
+    public static JPanel east_pane = new JPanel(new GridLayout(10, 1)); //오른쪽pane ->오늘할일,추가 등등 페이지
 
     public static JButton change_cancel = new JButton("취소"); //오늘할일 취소->보기페이지로 전환
     public static JButton change_complet = new JButton("완료");//오늘할일 저장->보기페이지로 전환
     public static JButton change_add = new JButton("추가");//오늘할일 추가->보기페이지로 전환
     public static JButton change = new JButton("수정");//오늘할일 수정페이지로 전환
     //ToDo 여기부터
-    public static JTextField []change_list= {null, null, null, null, null, null, null};//오늘할일 저장할 텍스트필드들
+    public static JTextField[] change_list = {null, null, null, null, null, null, null};//오늘할일 저장할 텍스트필드들
     public static Vector<String> todo_list = new Vector<String>(); //할 일을 저장해주는 벡터
-    public static String selectGroup,selectYear,selectMonth = "", selectDay=""; //버튼을 눌렀을 때 그룹 정보, 년, 월, 일 저장
+    public static String selectGroup, selectYear, selectMonth = "", selectDay = ""; //버튼을 눌렀을 때 그룹 정보, 년, 월, 일 저장
     public static JLabel[] l = new JLabel[7];
-    public static int changSize =0;
+    public static int changSize = 0;
     //ToDo 여기까지
     public static int todoAdd_count = 0; //추가버튼 누를 떄 몇개인지 카운트
 
 
     //아래쪽 pane
-    public static JPanel south_pane=new JPanel(new BorderLayout());
+    public static JPanel south_pane = new JPanel(new BorderLayout());
 
     //ToDO 여기부터
-    public static Vector<String>D_day = new Vector<String>(7);
-    public static Vector<String>D_day_dummy= new Vector<String>(7);
+    public static Vector<String> D_day = new Vector<String>(7);
+    public static Vector<String> D_day_dummy = new Vector<String>(7);
 //ToDO 여기껴지 수정
 
 
@@ -113,8 +111,8 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
     //캘린더상단
     public static JPanel cal_topPane = new JPanel();
-    public static JButton prevBtn= new JButton("이전");//이전버튼
-    public static JButton nextBtn= new JButton("다음");//다음버튼
+    public static JButton prevBtn = new JButton("이전");//이전버튼
+    public static JButton nextBtn = new JButton("다음");//다음버튼
     public static JComboBox<Integer> yearCombo = new JComboBox<Integer>();//년도 콤보박스 추가
     public static JComboBox<Integer> monthCombo = new JComboBox<Integer>();//월 콤보박스 추가
     public static JLabel yearLBl = new JLabel("년");//"년" 표시 라벨
@@ -122,9 +120,9 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
     //캘린더중앙
     public static JPanel centerPane = new JPanel(new BorderLayout());//가운데 패널 생성후 레이아웃 설정
-    public static JPanel titlePane = new JPanel(new GridLayout(1,7));//타이틀을 생성시킬 패널을 생성하고 레이아웃 설정
-    public static String title[] = {"일","월","화","수","목","금","토"};
-    public static JPanel dayPane = new JPanel(new GridLayout(0,7));//날짜가 나오는 패널
+    public static JPanel titlePane = new JPanel(new GridLayout(1, 7));//타이틀을 생성시킬 패널을 생성하고 레이아웃 설정
+    public static String title[] = {"일", "월", "화", "수", "목", "금", "토"};
+    public static JPanel dayPane = new JPanel(new GridLayout(0, 7));//날짜가 나오는 패널
 
     //달력관련 데이터
     public static Calendar date;//달력주입
@@ -146,7 +144,19 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         sign_btn.addActionListener(this);//회원가입버튼 이벤트
         login_btn.addActionListener(this);//로그인버튼 이벤트
         group_manage.addActionListener(this);//그룹관리버튼이벤트
-        group_combo.addActionListener(this);//콤보박스 선택시 이름이랑 code 관련된 할일목록 버튼에 나타나게 기능 구현
+
+        //todo 콤버박스 이벤트 수정
+        group_combo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectGroup = group_combo.getSelectedItem().toString();
+                setDay();
+                setDayReset();
+                setD_day();
+            }
+        });//콤보박스 선택시 이름이랑 code 관련된 할일목록 버튼에 나타나게 기능 구현
+
+
         groupBack_btn.addActionListener(this);//페이지전환 그룹설정->그룹보기로
         change.addActionListener(this);//페이지전환 할일보기->할일수정
         mouse m = new mouse();
@@ -155,17 +165,17 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         change_cancel.addMouseListener(m); //할일 취소 기능 구현
 
         //메인 상단
-        JLabel title=new JLabel("2022 자바2 팀프로젝트");
+        JLabel title = new JLabel("2022 자바2 팀프로젝트");
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(title_fnt);
         title.setBackground(new Color(221, 232, 137));
-        setLayout(new BorderLayout(10,10));
+        setLayout(new BorderLayout(10, 10));
         main_topPane.setBackground(new Color(221, 232, 137));
-        main_topPane.add(BorderLayout.CENTER,title);
+        main_topPane.add(BorderLayout.CENTER, title);
 
         //로그인 팬
         JLabel id_l = new JLabel("            id : ");
-        JLabel pw_l=new JLabel("password : ");
+        JLabel pw_l = new JLabel("password : ");
         JPanel id_p = new JPanel(new FlowLayout());
         id_p.setBackground(Color.pink);
         JPanel pw_p = new JPanel(new FlowLayout());
@@ -180,52 +190,52 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         id.setBorder(null); //텍스트박스 테두리 없애기
         password.setBorder(null);
 
-        login_pane.add(BorderLayout.NORTH,id_p); //아이디 비번텍스트필드 프레임
-        login_pane.add(BorderLayout.CENTER,pw_p);
+        login_pane.add(BorderLayout.NORTH, id_p); //아이디 비번텍스트필드 프레임
+        login_pane.add(BorderLayout.CENTER, pw_p);
 
         JPanel login_btnpane = new JPanel(new FlowLayout()); //로그인과 회원가입 버튼 프레임
         login_btnpane.add(sign_btn);
         login_btnpane.add(login_btn);
         login_btnpane.setBackground(Color.pink);
 
-        login_pane.add(BorderLayout.SOUTH,login_btnpane);
+        login_pane.add(BorderLayout.SOUTH, login_btnpane);
         login_pane.setBackground(Color.pink);
-        login_pane.setBorder(BorderFactory.createEmptyBorder(15 , 50, 15 , 30));
-        main_topPane.add(BorderLayout.WEST,login_pane);
+        login_pane.setBorder(BorderFactory.createEmptyBorder(15, 50, 15, 30));
+        main_topPane.add(BorderLayout.WEST, login_pane);
 
 
         //메인 오른쪽 팬 ->딱히 신경안써도되는 부분
-        mainright_pane.setSize(100,100);
+        mainright_pane.setSize(100, 100);
         JLabel right_l = new JLabel();
         mainright_pane.add(right_l);
-        mainright_pane.setBorder(BorderFactory.createEmptyBorder(15 , 0, 0 , 250));
+        mainright_pane.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 250));
         mainright_pane.setBackground(Color.pink);
-        main_topPane.add(BorderLayout.EAST,mainright_pane);
+        main_topPane.add(BorderLayout.EAST, mainright_pane);
 
 
         //왼쪽 pane(기본)
         //회원가입 레이아웃 기본 설정
-        west_pane.setSize(100,100);
+        west_pane.setSize(100, 100);
         JLabel west_l = new JLabel();
         west_pane.add(west_l);
-        west_l.setBorder(BorderFactory.createEmptyBorder(0 , 35, 0 , 220));
+        west_l.setBorder(BorderFactory.createEmptyBorder(0, 35, 0, 220));
         west_pane.setBackground(Color.cyan);
-        c.add(BorderLayout.WEST,west_pane);
+        c.add(BorderLayout.WEST, west_pane);
 
         //오른쪽pane
-        for(int i=0; i<7; i++){
-            change_list[i]=new JTextField(10); //그냥 텍필 재정의해주는 반복문
+        for (int i = 0; i < 7; i++) {
+            change_list[i] = new JTextField(10); //그냥 텍필 재정의해주는 반복문
         }
         todo.setTodo(); //오늘의 할일 프레임 호출
-        c.add(BorderLayout.EAST,east_pane);
+        c.add(BorderLayout.EAST, east_pane);
 
         //아래쪽pane
-        setD_day(); //디데이 아래쪽에 호출
+        setDefaultD_Day(); //디데이 아래쪽에 호출
 
-        c.add(BorderLayout.SOUTH,south_pane);
+        c.add(BorderLayout.SOUTH, south_pane);
 
-        c.add(BorderLayout.NORTH,main_topPane);//메인 상단에 pane추가
-        c.add(BorderLayout.CENTER,calPane);//메인 중간에 cal추가
+        c.add(BorderLayout.NORTH, main_topPane);//메인 상단에 pane추가
+        c.add(BorderLayout.CENTER, calPane);//메인 중간에 cal추가
 
         calPane.add(BorderLayout.NORTH, cal_topPane); //상하좌우 가운데로 나뉘어서 레이아웃 설정,위쪽에 대입시키고 pane삽입
 
@@ -251,7 +261,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         //title호출
         setCalendarTitle();  //요일을 만들어놓은 메소드
         centerPane.add(BorderLayout.NORTH, titlePane); //센터패널의 위쪽에 타이틀을 넣는다(요일)
-        calPane.add(BorderLayout.CENTER,centerPane);
+        calPane.add(BorderLayout.CENTER, centerPane);
 
         //날짜만들기
         centerPane.add(dayPane); //센터패널에 날짜패널 추가
@@ -270,9 +280,29 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
+    public static boolean[] check = new boolean[32]; //1부터 담고 최대 31일
+    public void getMonthTodo() {
+        selectYear = yearCombo.getSelectedItem().toString();
+        selectMonth = monthCombo.getSelectedItem().toString();
+    try {
+        String sql = "SELECT * FROM post WHERE post_team = '" + selectGroup + "' AND post_month = '" + selectMonth + "' AND post_year = '"+selectYear+ "'ORDER BY post_year , post_month, post_day, idx ASC";
+        //+"' AND post_month >= '" + selectMonth+"'"
+        ResultSet Rs = stmt.executeQuery(sql);
+        while (Rs.next()) {//디비에서
+            int tmpDay = Integer.parseInt(Rs.getString("post_day"));
+            check[tmpDay] = true;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
 
     //날짜설정
     public void setDay(){
+
         //요일
         date.set(year,month-1,1); //date를 세팅하고 요일을 1로 설정
         int week = date.get(Calendar.DAY_OF_WEEK); //요일값을 받아와서 저장
@@ -284,10 +314,16 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             JLabel lbl = new JLabel(" "); //들여쓰기
             dayPane.add(lbl);
         }
-
+        //todo
+        getMonthTodo();
         //날씨추가
         for(int day=1; day<=lastDay; day++){
-            JButton lbl = new JButton("<html>" + String.valueOf(day)+ "<br></html>" );//라벨선언해주는데 String.value 는 형변환
+            JButton lbl;
+            if(check[day]){
+                lbl = new JButton("<html>" + String.valueOf(day)+ "<br>!!</html>" );//라벨선언해주는데 String.value 는 형변환
+            }else{
+                lbl = new JButton("<html>" + String.valueOf(day)+ "<br></html>" );//라벨선언해주는데 String.value 는 형변환
+            }
 
             lbl.setFont(fnt);
             lbl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -326,6 +362,9 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
             dayPane.add(lbl);
         }
+        for(int i=1; i < 32; i++){ //일정 여부 초기화
+            check[i] = false;
+        }
     }
 
     //요일 설정
@@ -354,10 +393,48 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         }
         monthCombo.setSelectedItem(month);//이벤트와 연동시키기위해 추가
     }
+    //기본 d_day or 로그아웃 d_day
+    public void setDefaultD_Day(){
+        JPanel D_dayTitle = new JPanel(new GridLayout(1,7));
 
+        //Todo 현재 시간 저장
+        LocalDate now = LocalDate.now();
+        int curYear = now.getYear();
+        int curMonth =now.getMonthValue();
+        int curDay = now.getDayOfMonth();
+        D_day_dummy.add(+ curYear + "년 "+curMonth+ "월 "+ curDay+"일");
+        D_day.add("D-day");
+        for(int i=0;i<D_day.size(); i++){
+            JLabel lbl = new JLabel(D_day.get(i), JLabel.CENTER);
+            lbl.setFont(fnt);
+            D_dayTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            lbl.setForeground(Color.red);
+            D_dayTitle.add(lbl);
+        }
+
+        JPanel D_daycontent = new JPanel(new GridLayout(1,7));
+        for(int i=0;i<D_day.size();i++){
+            JLabel lbl = new JLabel(D_day_dummy.get(i),JLabel.CENTER);
+            lbl.setFont(fnt);
+            D_daycontent.setBorder(BorderFactory.createEmptyBorder(15, 0, 20, 0));
+            lbl.setBackground(Color.white);
+            D_daycontent.add(lbl);
+        }
+
+        JPanel D_daypane = new JPanel(new BorderLayout());
+        D_daypane.add(BorderLayout.NORTH,D_dayTitle);
+
+        D_daycontent.setBackground(Color.white);
+        D_daypane.add(BorderLayout.CENTER,D_daycontent);
+        south_pane.add(D_daypane);
+        south_pane.revalidate();
+        south_pane.repaint();
+    }
     //아래쪽 D-daypane
     //ToDO 디데이 수정
     public void setD_day(){
+        south_pane.removeAll();
+
         JPanel D_dayTitle = new JPanel(new GridLayout(1,7));
 
         //Todo 현재 시간 저장
@@ -366,16 +443,18 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         int curMonth =now.getMonthValue();
         int curDay = now.getDayOfMonth();
 
-        if(selectGroup == null){ //초기 화면에는 그룹이 없음
-            D_day_dummy.add(+ curYear + "년 "+curMonth+ "월 "+ curDay+"일");
-            D_day.add("D-day");
+        //ToDo 디데이 저장
 
-        }else{
             //ToDo 디데이 저장하기
+            //선택된 그룹마다 디데이 달라지게
+            //쿼리를 최대 7개만 가져와서
+            //일정이 지워지면 새로 계산
+            D_day.clear();
+            D_day_dummy.clear();
+
             try {
-//                String sql = "SELECT * FROM post ORDER BY post_year , post_month, post_day, idx ASC"; //년 월 일 기준으로 정렬한 채 가져오기
-                  String sql = "SELECT * FROM post WHERE post_team = '" +selectGroup +"' AND post_year >= '"+selectYear +"' AND post_month >= '" + selectDay +"' AND post_day = '" + selectDay+"'"
-                          + " ORDER BY post_year , post_month, post_day, idx ASC";
+                  String sql = "SELECT * FROM post WHERE post_team = '" +selectGroup +"' AND post_year >= '"+selectYear+"'"  + " ORDER BY post_year , post_month, post_day, idx ASC";
+                          //+"' AND post_month >= '" + selectMonth+"'"
                 ResultSet Rs = stmt.executeQuery(sql);
 
                 while(Rs.next()){
@@ -386,34 +465,33 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                     int postMonth = Integer.parseInt(Rs.getString("post_month"));
                     int postDay = Integer.parseInt(Rs.getString("post_day"));
 
-                    if(postTeam.equals(CalendarSwing.selectGroup) &&//선택된 그룹과 같은 그룹이고
-                            postYear >= curYear && postMonth >= curMonth && postDay >= curDay)  //년 월 일이 현재와 같거나 크다면
-                    { //ToDo
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(postYear,  postMonth, postDay);
+                    if(postMonth <= curMonth && postDay < curDay) continue; // 현재 월에 날짜가 오늘보다 작다면
 
-                        long dDay = cal.getTimeInMillis(); // 1000분의 1초로 계산
-                        long nowDay = System.currentTimeMillis();
-                        long result = dDay - nowDay;// 남은 시간: ms : 1000분의 1초 단위
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(postYear,  postMonth, postDay);
 
-                        long dayTemp = (result / 1000 / 60 / 60 / 24) -30; //디데이 날짜 기준 계산
+                    long dDay = cal.getTimeInMillis(); // 1000분의 1초로 계산
+                    long nowDay = System.currentTimeMillis();
+                    long result = dDay - nowDay +1;// 남은 시간: ms : 1000분의 1초 단위
 
-                        if(dayTemp == 0){
-                            D_day.add("D-day");
-                        }else{
-                            D_day.add("D-"+Long.toString(dayTemp)); //디데이 저장
-                        }
+                    long dayTemp = (result / 1000 / 60 / 60 / 24) -30; //디데이 날짜 기준 계산
 
-                        D_day_dummy.add(Rs.getString("post_text")); //내용 저장
-
+                    if(dayTemp == 0){
+                        D_day.add("D-day");
+                    }else{
+                        D_day.add("D-"+Long.toString(dayTemp)); //디데이 저장
                     }
+
+                    D_day_dummy.add(Rs.getString("post_text")); //내용 저장
+
+
                     if(D_day.size() == 7)break; //7개가 저장이 된다면 있다면 종료
                 }
-                south_pane.repaint();
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+
 
         for(int i=0;i<D_day.size(); i++){
             JLabel lbl = new JLabel(D_day.get(i), JLabel.CENTER);
@@ -422,6 +500,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             lbl.setForeground(Color.red);
             D_dayTitle.add(lbl);
         }
+
         JPanel D_daycontent = new JPanel(new GridLayout(1,7));
         for(int i=0;i<D_day.size();i++){
             JLabel lbl = new JLabel(D_day_dummy.get(i),JLabel.CENTER);
@@ -430,12 +509,15 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             lbl.setBackground(Color.white);
             D_daycontent.add(lbl);
         }
+
         JPanel D_daypane = new JPanel(new BorderLayout());
         D_daypane.add(BorderLayout.NORTH,D_dayTitle);
 
         D_daycontent.setBackground(Color.white);
         D_daypane.add(BorderLayout.CENTER,D_daycontent);
         south_pane.add(D_daypane);
+        south_pane.revalidate();
+        south_pane.repaint();
     }
 
     //콤보박스 클릭이벤트
@@ -459,10 +541,12 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         if(obj == prevBtn){  //이전버튼을 눌렀을 때
             //이전 월을 눌렀을때
             prevMonth();
+            setDay();
             setDayReset();//날을 초기화시키는 메소드
         }else if(obj == nextBtn){ //다음버튼을 눌렀을 때
             //다음월을 눌렀을 때
             nextMonth();
+            setDay();
             setDayReset();
         }else if(obj == change){ //화면전환 할일보기->할일수정
             todoAdd_count=0;
@@ -500,11 +584,13 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
             //ToDo 로그인이 됐을 때 - 그룹 콤버박스에 있는 그룹으로 정보 추가인
             selectGroup = group_combo.getSelectedItem().toString();
+            selectMonth = monthCombo.getSelectedItem().toString();
+
+            setDay();
+            setDayReset();
             setD_day();
             west_pane.repaint();
-            south_pane.repaint();
 
-            //south_pane.repaint();
         }
     }
 
@@ -538,7 +624,6 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                 for(int i=0; i < curPostCnt; i++){
                     if(change_list[i] != null && change_list[i].getText().equals("")) continue; //빈칸이면 그냥 건너 뛰기
                     else {
-                        System.out.print("여기는 아이입니다. " + i);
                         sql = "";
                         // 현재 시간
                         LocalTime now = LocalTime.now();
@@ -570,6 +655,9 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                     //텍박에 있는 텍스트 날짜 그룹 디비에 insert
                 }
                 //ToDo 수정이 완료되면 디데이 수정
+
+                setDay();
+                setDayReset();
                 setD_day();
                 try {
                     todo.setTodo();
