@@ -40,6 +40,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
     //메인상단 pane 오른쪽팬
     public static JPanel mainright_pane = new JPanel();
+    JLabel curTime = new JLabel();
 
     //왼쪽 pane
     public static JPanel west_pane = new JPanel(new GridLayout(0, 1));
@@ -203,11 +204,21 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         login_pane.setBorder(BorderFactory.createEmptyBorder(15, 50, 15, 30));
         main_topPane.add(BorderLayout.WEST, login_pane);
 
-
+    //TODO: 현재 시간 - 스레드
         //메인 오른쪽 팬 ->딱히 신경안써도되는 부분
         mainright_pane.setSize(100, 100);
-        JLabel right_l = new JLabel();
-        mainright_pane.add(right_l);
+        JLabel curTimeLabel = new JLabel();
+
+//        curTimeLabel.setVerticalAlignment(mainright_pane.);
+//        curTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        curTimeLabel.setFont(new Font("Gothic", Font.ITALIC, 30));
+
+        curTimeThread th = new curTimeThread(curTimeLabel);
+        th.start();
+
+        mainright_pane.add(curTimeLabel);
+
         mainright_pane.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 250));
         mainright_pane.setBackground(Color.pink);
         main_topPane.add(BorderLayout.EAST, mainright_pane);
