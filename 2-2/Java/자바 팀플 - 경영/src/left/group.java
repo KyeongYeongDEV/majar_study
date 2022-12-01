@@ -2,25 +2,41 @@ package left;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import main.CalendarSwing;
 
+import static left.sign.k;
+import static main.CalendarSwing.*;
+
 public class group {
+    public static JLabel label = new JLabel();
     //왼쪽-그룹 보기
-    public static void setgroupView(){
+    public static void setgroupView() throws SQLException {
         CalendarSwing.west_pane.removeAll();
         //그룹 정보 타이틀 및 프레임 크기 설정
         JPanel group_top = new JPanel(new GridLayout(2,1));
         JLabel group_title = new JLabel("그룹 정보");
-        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 90));
+        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 60));
         group_title.setHorizontalAlignment(SwingConstants.CENTER);
         group_title.setFont(new Font("Dialog",Font.BOLD,25));
         group_top.add(group_title);
 
         //그룹선택 콤보박스
         JPanel combo = new JPanel(new FlowLayout());
-        CalendarSwing.group_combo.addItem("학교");
-        CalendarSwing.group_combo.addItem("회사");
-        CalendarSwing.group_combo.addItem("가족");
+        String SelectSql = "SELECT * FROM member\n";
+        ResultSet resultSet = stmt.executeQuery(SelectSql);
+        ArrayList<MemberBean> list = new ArrayList<MemberBean>();
+        while (resultSet.next()) {
+            MemberBean memberBean = new MemberBean();
+            memberBean.setId(resultSet.getString("member_id"));
+            memberBean.setName(resultSet.getString("member_name"));
+            memberBean.setPassword(resultSet.getString("member_pw"));
+            memberBean.setGroup(resultSet.getString("member_group"));
+            CalendarSwing.group_combo.addItem(memberBean.getGroup());
+        }
 
 
         CalendarSwing.group_combo.setPreferredSize(new Dimension(90,30));
@@ -60,9 +76,7 @@ public class group {
         l3.setFont(new Font("Dialog",Font.BOLD,20));
         group_content_pane.add(l3);
 
-        CalendarSwing.group_v.add("문준호");//그룹원 리스트에 들어갈 테스트값 ->콤보박스 바뀌면 처리해야함
-        CalendarSwing.group_v.add("이성현");
-        CalendarSwing.group_v.add("최경영");
+
 
         CalendarSwing.person_List.setListData(CalendarSwing.group_v);
         CalendarSwing.person_List.setVisibleRowCount(3);
@@ -87,18 +101,121 @@ public class group {
         CalendarSwing.west_pane.add(group_manage_btn);
         CalendarSwing.west_pane.revalidate();
     }
+    public static String group_search() throws SQLException {
+        String SelectSql = "SELECT * FROM member WHERE member_group_check = " + "'" + join_name.getText() + "'";
 
+        int sw = 0;
+        ResultSet resultSet = null;
+        try {
+            resultSet = stmt.executeQuery(SelectSql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        ArrayList<MemberBean> list = new ArrayList<MemberBean>();
+        while (sw == 0) {
+            try {
+                if (!resultSet.next()) break;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            MemberBean memberBean = new MemberBean();
+
+            memberBean.setGroup(resultSet.getString("member_group_check"));
+            if(memberBean.getGroup_check().equals(join_name.getText())){
+                sw=1;
+            }
+        }
+        if(sw==1)
+            return "이미 만듬";
+        return "존재 안함";
+    }
+    public static String group_login() throws SQLException {
+        int sw=0;
+        String SelectSql = "SELECT * FROM member";
+        System.out.println(SelectSql);
+        ResultSet resultSet = null;
+        try {
+            resultSet = stmt.executeQuery(SelectSql);
+        } catch (SQLException e) {
+            System.out.println("뭔데");
+        }
+
+        ArrayList<MemberBean> list = new ArrayList<MemberBean>();
+        while (sw==0) {
+            try {
+                if (!resultSet.next()) break;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            MemberBean memberBean = new MemberBean();
+            memberBean.setId(resultSet.getString("member_id"));
+            memberBean.setName(resultSet.getString("member_name"));
+            memberBean.setPassword(resultSet.getString("member_pw"));
+            memberBean.setGroup(resultSet.getString("member_group"));
+            memberBean.setGroup_code(resultSet.getInt("member_group_code"));
+            memberBean.setGroup_check(resultSet.getString("member_group_check"));
+            int gap = Integer.parseInt(join_code.getText());
+            String sql = "INSERT INTO member(`member_group_code`, `member_name`, `member_group`)\n";
+            sql += " VALUES (" + join_code.getText() + ", '" + k + "', '" + join_name.getText() + "')";
+            System.out.println(sql);
+            stmt.executeUpdate(sql);
+            System.out.println("성공?");
+            return "성공!";
+
+
+        }
+
+        return "실패!";
+    }
+    public static String group_make() throws SQLException {
+        int sw=0;
+        int gap=0;
+        String SelectSql = "SELECT * FROM member WHERE member_name = "+"'"+k+"'";
+
+        ResultSet resultSet = null;
+        try {
+            resultSet = stmt.executeQuery(SelectSql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        ArrayList<MemberBean> list = new ArrayList<MemberBean>();
+        while (sw==0) {
+            try {
+                if (!resultSet.next()) break;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            MemberBean memberBean = new MemberBean();
+            memberBean.setId(resultSet.getString("member_id"));
+            memberBean.setName(resultSet.getString("member_name"));
+            memberBean.setPassword(resultSet.getString("member_pw"));
+            memberBean.setGroup(resultSet.getString("member_group"));
+            memberBean.setGroup_code(resultSet.getInt("member_group_code"));
+            gap =Integer.parseInt(create_code.getText());
+            System.out.println(k);
+            System.out.println(create_code.getText());
+            System.out.println(create_name.getText());
+        }
+
+        String sql2 = "INSERT INTO member(`member_group_code`, `member_group`)";
+        sql2 += " VALUES (" + gap + ",'" + create_name.getText() + "')";
+        stmt.executeUpdate(sql2);
+
+        return "성공!";
+    }
     //그룹관리페이지
     public static void setgroupManage(){
         CalendarSwing.west_pane.removeAll();
 
         CalendarSwing.west_pane.setBackground(Color.cyan);
-        JPanel group_manage_pane = new JPanel(new GridLayout(5,1));
+        JPanel group_manage_pane = new JPanel(new GridLayout(6,1));
         group_manage_pane.setBackground(Color.cyan);
 
         //그룹관리프레임 제목
         JLabel group_title = new JLabel("그룹 설정");
-        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 90));
+        group_title.setBorder(BorderFactory.createEmptyBorder(0 , 70, 0, 60));
         group_title.setHorizontalAlignment(SwingConstants.CENTER);
         group_title.setFont(new Font("Dialog",Font.BOLD,25));
         group_manage_pane.add(group_title);
@@ -184,7 +301,11 @@ public class group {
         back_btn_pane.setBackground(Color.cyan);
         back_btn_pane.setBorder(BorderFactory.createEmptyBorder(35 , 0, 0 , 0));
 
+
         back_btn_pane.add(CalendarSwing.groupBack_btn);//그냥 페이지전환 뒤로가기버튼
+
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        group_manage_pane.add(label);
         group_manage_pane.add(back_btn_pane);
 
         CalendarSwing.west_pane.add(group_manage_pane);

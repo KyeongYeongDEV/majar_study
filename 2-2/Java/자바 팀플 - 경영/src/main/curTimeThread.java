@@ -18,9 +18,14 @@ class curTimeThread extends Thread{
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int min = c.get(Calendar.MINUTE);
             int second = c.get(Calendar.SECOND);
+            String tmp;
 
-            String clock = Integer.toString(hour);
-            clock += ":" + min + ":" + second;
+            if(second >=0 && second< 10){
+                tmp = "0"+second;
+            }else{
+                tmp = String.valueOf(second);
+            }
+            String clock =   "<html>" + "  현재 시각"+"<br>"+hour+ ":" + min + ":" + tmp;
 
             timeLabel.setText(clock);
         }

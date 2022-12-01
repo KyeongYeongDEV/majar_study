@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -20,6 +21,8 @@ import right.*;
 //ToDo 추가
 import java.time.LocalDate; //현재 시간을 받아줌
 
+import static left.group.*;
+import static left.sign.*;
 import static main.CalendarSwing.stmt;
 
 
@@ -39,7 +42,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
 
     //메인상단 pane 오른쪽팬
-    public static JPanel mainright_pane = new JPanel();
+    public static JPanel mainright_pane = new JPanel(new FlowLayout());
     JLabel curTime = new JLabel();
 
     //왼쪽 pane
@@ -145,7 +148,10 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         sign_btn.addActionListener(this);//회원가입버튼 이벤트
         login_btn.addActionListener(this);//로그인버튼 이벤트
         group_manage.addActionListener(this);//그룹관리버튼이벤트
-
+        logout.addActionListener(this);
+        sign_ok.addActionListener(this);
+        groupCreate_btn.addActionListener(this);
+        groupJoin_btn.addActionListener(this);
         //todo 콤버박스 이벤트 수정
         group_combo.addActionListener(new ActionListener() {
             @Override
@@ -209,17 +215,19 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         mainright_pane.setSize(100, 100);
         JLabel curTimeLabel = new JLabel();
 
-//        curTimeLabel.setVerticalAlignment(mainright_pane.);
-//        curTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        curTimeLabel.setVerticalAlignment(SwingConstants.CENTER);
+        curTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         curTimeLabel.setFont(new Font("Gothic", Font.ITALIC, 30));
+        curTimeLabel.setBorder(BorderFactory.createEmptyBorder(40, 60, 40, 0));
+
 
         curTimeThread th = new curTimeThread(curTimeLabel);
         th.start();
 
         mainright_pane.add(curTimeLabel);
 
-        mainright_pane.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 250));
+        mainright_pane.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 50));
         mainright_pane.setBackground(Color.pink);
         main_topPane.add(BorderLayout.EAST, mainright_pane);
 
@@ -230,7 +238,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         JLabel west_l = new JLabel();
         west_pane.add(west_l);
         west_l.setBorder(BorderFactory.createEmptyBorder(0, 35, 0, 220));
-        west_pane.setBackground(Color.cyan);
+        west_pane.setBackground(new Color(0xA2E8DB));
         c.add(BorderLayout.WEST, west_pane);
 
         //오른쪽pane
@@ -290,6 +298,148 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
+    public static JButton logout = new JButton("뒤로 가기");
+    public void setLogin(){
+        login_pane.removeAll();
+        //로그인 팬
+        JLabel id_l = new JLabel("                id : ");
+        JLabel pw_l=new JLabel("password : ");
+        JPanel id_p = new JPanel(new FlowLayout());
+        id_p.setBackground(Color.pink);
+        JPanel pw_p = new JPanel(new FlowLayout());
+        pw_p.setBackground(Color.pink);
+
+
+        //id비번 라벨값과 텍스트필드 넣기
+        id_p.add(id_l);
+        id_p.add(id);
+        pw_p.add(pw_l);
+        pw_p.add(password);
+        id.setBorder(null); //텍스트박스 테두리 없애기
+        password.setBorder(null);
+
+        login_pane.add(BorderLayout.NORTH,id_p); //아이디 비번텍스트필드 프레임
+        login_pane.add(BorderLayout.CENTER,pw_p);
+
+        JPanel login_btnpane = new JPanel(new FlowLayout()); //로그인과 회원가입 버튼 프레임
+        login_btnpane.add(sign_btn);
+        login_btnpane.add(login_btn);
+        login_btnpane.setBackground(Color.pink);
+
+        login_pane.add(BorderLayout.SOUTH,login_btnpane);
+        login_pane.setBackground(Color.pink);
+        login_pane.setBorder(BorderFactory.createEmptyBorder(15 , 50, 15 , 30));
+        main_topPane.add(BorderLayout.WEST,login_pane);
+        main_topPane.repaint();
+    }
+    public static void setlogin_start(){
+        JLabel id_l = new JLabel("                id : ");
+        JLabel pw_l=new JLabel("password : ");
+        JPanel id_p = new JPanel(new FlowLayout());
+        id_p.setBackground(Color.pink);
+        JPanel pw_p = new JPanel(new FlowLayout());
+        pw_p.setBackground(Color.pink);
+
+
+        //id비번 라벨값과 텍스트필드 넣기
+        id_p.add(id_l);
+        id_p.add(id);
+        pw_p.add(pw_l);
+        pw_p.add(password);
+        id.setBorder(null); //텍스트박스 테두리 없애기
+        password.setBorder(null);
+
+        login_pane.add(BorderLayout.NORTH,id_p); //아이디 비번텍스트필드 프레임
+        login_pane.add(BorderLayout.CENTER,pw_p);
+
+        JPanel login_btnpane = new JPanel(new FlowLayout()); //로그인과 회원가입 버튼 프레임
+        login_btnpane.add(sign_btn);
+        login_btnpane.add(login_btn);
+        login_btnpane.setBackground(Color.pink);
+
+        login_pane.add(BorderLayout.SOUTH,login_btnpane);
+        login_pane.setBackground(Color.pink);
+        login_pane.setBorder(BorderFactory.createEmptyBorder(15 , 50, 15 , 30));
+        main_topPane.add(BorderLayout.WEST,login_pane);
+    }
+    public static void setWelcome(String ok) throws SQLException {
+        login_pane.removeAll();
+
+        //로그인 팬
+
+        JLabel idlbl = new JLabel(ok+"님");
+        JLabel pwlbl=new JLabel("환영합니다.");
+
+        login_pane.add(BorderLayout.NORTH,idlbl); //아이디 비번텍스트필드 프레임
+        login_pane.add(BorderLayout.CENTER,pwlbl);
+
+
+        login_pane.add(BorderLayout.SOUTH,logout);
+        login_pane.setBackground(Color.pink);
+        login_pane.setBorder(BorderFactory.createEmptyBorder(30 , 90, 30 , 75));
+        main_topPane.add(BorderLayout.WEST,login_pane);
+        main_topPane.repaint();
+    }
+    public static void setWelcome2(){
+        login_pane.removeAll();
+
+        //로그인 팬
+        JLabel idlbl = new JLabel("로그인");
+        JLabel pwlbl=new JLabel("불가.");
+
+        login_pane.add(BorderLayout.NORTH,idlbl); //아이디 비번텍스트필드 프레임
+        login_pane.add(BorderLayout.CENTER,pwlbl);
+
+
+        login_pane.add(BorderLayout.SOUTH,logout);
+        login_pane.setBackground(Color.pink);
+        login_pane.setBorder(BorderFactory.createEmptyBorder(30 , 90, 30 , 75));
+        main_topPane.add(BorderLayout.WEST,login_pane);
+        main_topPane.repaint();
+    }
+    public static void setWelcome3(){
+        login_pane.removeAll();
+
+        //로그인 팬
+        JLabel id_l = new JLabel("                id : ");
+        JLabel pw_l=new JLabel("password : ");
+        JPanel id_p = new JPanel(new FlowLayout());
+        id_p.setBackground(Color.pink);
+        JPanel pw_p = new JPanel(new FlowLayout());
+        pw_p.setBackground(Color.pink);
+
+        //id비번 라벨값과 텍스트필드 넣기
+        id_p.add(id_l);
+        id_p.add(id);
+        pw_p.add(pw_l);
+        pw_p.add(password);
+        id.setBorder(null); //텍스트박스 테두리 없애기
+        password.setBorder(null);
+
+        login_pane.add(BorderLayout.NORTH,id_p); //아이디 비번텍스트필드 프레임
+        login_pane.add(BorderLayout.SOUTH,pw_p);
+
+        JPanel login_btnpane = new JPanel(new FlowLayout()); //로그인과 회원가입 버튼 프레임
+        login_btnpane.add(sign_btn);
+        login_btnpane.add(login_btn);
+        login_btnpane.setBackground(Color.pink);
+
+        login_pane.add(BorderLayout.SOUTH,login_btnpane);
+        login_pane.setBackground(Color.pink);
+        login_pane.setBorder(BorderFactory.createEmptyBorder(15 , 50, 15 , 30));
+        main_topPane.add(BorderLayout.WEST,login_pane);
+
+        login_pane.add(BorderLayout.NORTH,id_l); //아이디 비번텍스트필드 프레임
+        login_pane.add(BorderLayout.CENTER,pw_p);
+
+
+        login_pane.add(BorderLayout.SOUTH,logout);
+        login_pane.setBackground(Color.pink);
+        login_pane.setBorder(BorderFactory.createEmptyBorder(30 , 90, 30 , 75));
+        main_topPane.add(BorderLayout.WEST,login_pane);
+        main_topPane.repaint();
+    }
+
 
     public static boolean[] check = new boolean[32]; //1부터 담고 최대 31일
     public void getMonthTodo() {
@@ -351,6 +501,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
                 //todo 선택된 그룹과 년월일을 저장
                 @Override //
                 public void actionPerformed(ActionEvent e) {
+//                    if(group_combo.)
                     selectGroup = group_combo.getSelectedItem().toString();//그룹 콤버박스
                     selectYear = yearCombo.getSelectedItem().toString();
                     selectMonth = monthCombo.getSelectedItem().toString();
@@ -566,42 +717,158 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         else if(obj == sign_btn){//화면전환 회원가입페이지로
             sign.setSign();
         }
-        else if(obj == sign_ok){//회원가입하기
-            west_pane.removeAll();
-            west_pane.setSize(100,100);
-            JLabel west_l = new JLabel();
-            west_pane.add(west_l);
-            west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 220));
-            west_pane.setBackground(Color.cyan);
+        else if(obj == sign_ok){//회원가입하기//////
+            try{
+            id();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
+
+    }
         else if(obj == sign_cancel){//회원가입취소
             west_pane.removeAll();
             west_pane.setSize(100,100);
             JLabel west_l = new JLabel();
             west_pane.add(west_l);
-            west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 220));
-            west_pane.setBackground(Color.cyan);
+            west_l.setBorder(BorderFactory.createEmptyBorder(0 , 30, 15 , 210));
+            west_pane.setBackground(new Color(0xA2E8DB));
         }
         else if(obj == groupBack_btn){//화면전환 그룹설정->그룹보기
-            group.setgroupView();
+            try {
+                group.setgroupView();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             west_pane.repaint();
         }
         else if(obj == group_manage){//화면전환 그룹보기-> 그룹설정
             group.setgroupManage();
             west_pane.repaint();
         }
-        else if(obj == login_btn){//로그인하기
-            group.setgroupView();
+        else if(obj == login_btn) {//로그인하기
+            String ok = search();
+            if (ok.equals("로그인 불가")){
+                setWelcome2();
+            }else{
+                if (login().equals("로그인 성공")) {
+                    try {
+                        setWelcome(ok);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        group.setgroupView();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else {
+                    setWelcome2();
+                }
+            }
+        }
+        else if(obj==logout){
+            System.out.println("!!");
+            try {
 
-            //ToDo 로그인이 됐을 때 - 그룹 콤버박스에 있는 그룹으로 정보 추가인
-            selectGroup = group_combo.getSelectedItem().toString();
-            selectMonth = monthCombo.getSelectedItem().toString();
+                group.setgroupView();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            setLogin();
+        }
+        else if(obj==groupJoin_btn){
+            try {
+                System.out.println("존재존재존재");
+                if(group_login().equals("성공!")) {
+                    System.out.println("!!");
+                    label.setText("그룹 가입 완료!");
+                    west_pane.repaint();
+                    west_pane.revalidate();
+                }
 
-            setDay();
-            setDayReset();
-            setD_day();
+            } catch (SQLException ex) {
+                label.setText("중복오류");
+                west_pane.repaint();
+                west_pane.revalidate();
+            }
+
+        }
+        else if(obj==groupCreate_btn){
+            try {
+                if(group_make().equals("성공!")){
+                    label.setText("그룹 생성 완료");
+                    west_pane.repaint();
+                    west_pane.revalidate();
+                }
+                else {
+                    label.setText("그룹 생성 실패 -중복 오류.");
+                    west_pane.repaint();
+                    west_pane.revalidate();
+                }
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        else if(obj == group_combo){
+            int p = 0;
+            String w;
+            group_name.setText(group_combo.getSelectedItem().toString());
+            String SelectSql = "SELECT * FROM member WHERE member_group = "+"'"+group_name.getText()+"'";
+            ResultSet resultSet = null;
+            try {
+                resultSet = stmt.executeQuery(SelectSql);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            ArrayList<MemberBean> list = new ArrayList<MemberBean>();
+            while (true) {
+                try {
+                    if (!resultSet.next()) break;
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                MemberBean memberBean = new MemberBean();
+                try {
+                    memberBean.setGroup_code(resultSet.getInt("member_group_code"));
+                    p = memberBean.getGroup_code();
+                    w=Integer.toString(p);
+                    group_code.setText(w);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            String SelectSql2 = "SELECT * FROM member WHERE member_group = "+"'"+group_name.getText()+"'";
+            System.out.println(p);
+            ResultSet resultSet1 = null;
+            try {
+                resultSet1 = stmt.executeQuery(SelectSql2);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            group_v.clear();
+            ArrayList<MemberBean> list2 = new ArrayList<MemberBean>();
+            while (true) {
+                try {
+                    if (!resultSet1.next()) break;
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                MemberBean memberBean = new MemberBean();
+
+                try {
+                    memberBean.setName(resultSet1.getString("member_name"));
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                CalendarSwing.group_v.add(memberBean.getName());//그룹원 리스트에 들어갈 테스트값 ->콤보박스 바뀌면 처리해야함
+                System.out.println(memberBean.getName());
+            }
+            person_List.setListData(group_v);
+            CalendarSwing.person_List.setVisibleRowCount(3);
+            CalendarSwing.person_List.setFixedCellWidth(70);
             west_pane.repaint();
-
         }
     }
 
