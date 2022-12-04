@@ -1,50 +1,76 @@
-
-
-import java.io.*;
-import java.util.*;
+package 기말;
 
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 class MDIA extends JDialog{
-	private JLabel label1  = new JLabel("파일 1");
-	private JLabel label2 = new JLabel("파일 2");
-	private JButton Btn1 = new JButton("1번 파일 선택");
-	private JButton Btn2 = new JButton("2번 파일 선택");
-	File file1;
-	File file2;
+	private JLabel label1  = new JLabel("1번 파일 경로");
+	private JLabel label2 = new JLabel("2번 파일 경로");
+	private JTextField fileName1 = new JTextField();
+	private JTextField fileName2 = new JTextField();
+	private JButton Btn1 = new JButton("입력 완료");
+	
 
 	public MDIA(JFrame frame, String title){
 		super(frame,title,true);
-		this.setLayout(new GridLayout(2,2));
+		this.setLayout(new GridLayout(3,2));
 		this.add(label1);
-		this.add(Btn1);
+		this.add(fileName1);
 		this.add(label2);
-		this.add(Btn2);
-
+		this.add(fileName2);
+		this.add(Btn1);
+		
 		Btn1.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				JFileChooser chooser = new JFileChooser();
-				String path = chooser.getSelectedFile().getPath();
 				
-				file1 = new File(path +"/");
-				try (FileReader filereader = new FileReader(file1)) {
-					int singleCh = 0;
-					while((singleCh = filereader.read()) != -1){
-					System.out.print((char)singleCh);
-					}
-					filereader.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				// file2 = new File(fileName2.getText());
+
+				// try{
+				// 	File file1 = new File(fileName1.getText());
+				// 	FileReader Reader1 = new FileReader(file1);
+				// 	int singleCh = 0;
+				// 	while((singleCh = Reader1.read()) != -1){
+				// 		System.out.print((char)singleCh);
+				// 	}
+				// 	Reader1.close();
+
+				// } catch (FileNotFoundException er) {
+				// 	// TODO: handle exception
+				// }catch(IOException err){
+				// 	System.out.println(err);
+				// }
+
+				// try //file 입력 스트림을 생성
+				// {
+				// 	FileReader Reader1 = new FileReader(file1);
+				// 	FileReader Reader2 = new FileReader(file2);
+				// 	 //스트림으로 입력 버퍼를 생성
+				// 	BufferedReader BufReader1 = new BufferedReader(Reader1);
+				// 	BufferedReader BufReader2 = new BufferedReader(Reader2);
+
+				// 	List<String> Lines = new ArrayList<String>();
+				// 	String Line = "";
+				// 	//텍스트 내용을 한 줄씩 읽어와 aLine에 담고, 이를 aLines에 add 함.
+				// 	while((Line = BufReader1.readLine()) != null) {
+				// 		Lines.add(Line);
+				// 	}
+				// 	BufReader1.close();
+				// 	for(int i = 0 ; i < Lines.size() ; i++) {
+				// 		System.out.println(i + " 번 행 데이터 : " + Lines.get(i));
+				// 	}
+				// } catch (IOException e1) {
+				// 	// TODO Auto-generated catch block
+				// 	e1.printStackTrace();
+				// }
+
 			}
 		});
 
-		setSize(200,200);
+		setSize(400,150);
 	}
 }
 
