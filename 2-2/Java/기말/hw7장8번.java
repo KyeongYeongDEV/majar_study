@@ -32,11 +32,6 @@ class MD extends JDialog{ //다이얼로그를 관리해주는 클래스
 
     public String calculateBtn(){
         String result = "";
-        
-
-        if(tf.getText().equals("그만")){
-            
-        }
 
         if(!tf.getText().equals("")){ //값이 입력이 되었다면
             StringTokenizer ST = new StringTokenizer(tf.getText(), " "); //토크나이저 후 앞 뒤 공백 제거

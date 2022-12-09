@@ -1,110 +1,109 @@
-package 기말;
-
-import java.awt.*;
-import java.awt.event.*;
-
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
+public class hw8장6번 extends JFrame {
+    JLabel lbl = new JLabel("label"); //
+    FileReader fileReader1 = null; // 1번 파일을 받아 줄 파일 리더
+    FileReader fileReader2 = null;// 2번 파일을 받아 줄 파일 리더 
+    FileWriter fileWriter = null; //파일을 저장을 할 때 사용
 
-class MDIA extends JDialog{
-	private JLabel label1  = new JLabel("1번 파일 경로");
-	private JLabel label2 = new JLabel("2번 파일 경로");
-	private JTextField fileName1 = new JTextField();
-	private JTextField fileName2 = new JTextField();
-	private JButton Btn1 = new JButton("입력 완료");
-	
+    int cnt = 0;
 
-	public MDIA(JFrame frame, String title){
-		super(frame,title,true);
-		this.setLayout(new GridLayout(3,2));
-		this.add(label1);
-		this.add(fileName1);
-		this.add(label2);
-		this.add(fileName2);
-		this.add(Btn1);
-		
-		Btn1.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				
-				// file2 = new File(fileName2.getText());
+    public hw8장6번() { //기본 정보를 설정
+        setTitle("JFileChooser"); 
+        setDefaultCloseOperation(3);
+        Container c = getContentPane();
+        c.add(lbl);
+        createMenu(); // 메뉴를 불러옵니다
 
-				// try{
-				// 	File file1 = new File(fileName1.getText());
-				// 	FileReader Reader1 = new FileReader(file1);
-				// 	int singleCh = 0;
-				// 	while((singleCh = Reader1.read()) != -1){
-				// 		System.out.print((char)singleCh);
-				// 	}
-				// 	Reader1.close();
+        setSize(300,300);
+        setVisible(true);
+    }
 
-				// } catch (FileNotFoundException er) {
-				// 	// TODO: handle exception
-				// }catch(IOException err){
-				// 	System.out.println(err);
-				// }
+    public void createMenu(){
+        JMenuBar mb = new JMenuBar(); //메뉴바 생성
+        JMenu fileMenu = new JMenu("file"); //메뉴바에 넣을 파일메뉴
+        JMenuItem open = new JMenuItem("open"); //파일 메뉴 안에 넣을 open 메뉴 아이템
+        JMenuItem save = new JMenuItem("save"); // 파일 메뉴 안에 넣을 save 메뉴 아이템
 
-				// try //file 입력 스트림을 생성
-				// {
-				// 	FileReader Reader1 = new FileReader(file1);
-				// 	FileReader Reader2 = new FileReader(file2);
-				// 	 //스트림으로 입력 버퍼를 생성
-				// 	BufferedReader BufReader1 = new BufferedReader(Reader1);
-				// 	BufferedReader BufReader2 = new BufferedReader(Reader2);
+        open.addActionListener(new ac()); //이벤트 추가
+        save.addActionListener(new ac()); //이벤트 추가
+        fileMenu.add(open); //open 메뉴 아이템 추가
+        fileMenu.add(save); //save 메뉴 아이템 추가
+        mb.add(fileMenu); //메뉴바에 파일 메뉴 추가
+        setJMenuBar(mb);
+    }
 
-				// 	List<String> Lines = new ArrayList<String>();
-				// 	String Line = "";
-				// 	//텍스트 내용을 한 줄씩 읽어와 aLine에 담고, 이를 aLines에 add 함.
-				// 	while((Line = BufReader1.readLine()) != null) {
-				// 		Lines.add(Line);
-				// 	}
-				// 	BufReader1.close();
-				// 	for(int i = 0 ; i < Lines.size() ; i++) {
-				// 		System.out.println(i + " 번 행 데이터 : " + Lines.get(i));
-				// 	}
-				// } catch (IOException e1) {
-				// 	// TODO Auto-generated catch block
-				// 	e1.printStackTrace();
-				// }
+    class ac implements ActionListener{ //액션이벤트 클래스
+        private JFileChooser chooser;
 
-			}
-		});
+        public ac(){
+            chooser = new JFileChooser();
+        }
 
-		setSize(400,150);
-	}
-}
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if(e.getActionCommand().equals("open")){ //open을 누르면
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("txtFile","txt"); //텍스트 파일 형식
+                chooser.setFileFilter(filter);
+                int ret = chooser.showOpenDialog(null);
+                if(ret == JFileChooser.APPROVE_OPTION){ //파일을 선택을 했다면
+                    if(cnt == 0){ //이전에 선택된 파일이 없다 즉 첫 번째 파일
+                        String path = chooser.getSelectedFile().getPath(); //파일 경로를 저장
+                        try {
+                            fileReader1 = new FileReader(path+"\\"); //경로에 있는 파일을 읽어온다
+                        } catch (FileNotFoundException ex) { //에러 잡기
+                            throw new RuntimeException(ex);
+                        }
+                        cnt++;
+                        lbl.setText("first file open"); //첫 번째 파일이 추가 되었다는 걸 알려준다.
+                    }
+                    else if(cnt==1){ //첫 번째 파일일 저장되어 있다면 
+                        String path = chooser.getSelectedFile().getPath(); //아래는 위의 식과 동일
+                        try {
+                            fileReader2 = new FileReader(path+"\\");
+                        } catch (FileNotFoundException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        cnt++;
+                        lbl.setText("second file open");
+                    }
+                }
+            }
+            else if(e.getActionCommand().equals("save")){ //저장을 누른 경우
+                int ret = chooser.showSaveDialog(null);
+                if(ret == JFileChooser.APPROVE_OPTION){
+                    String path = chooser.getSelectedFile().getPath(); //두개이 파일을 합친 정보를 저장할 파일의 경로를 불러온다
+                    try {
+                        fileWriter = new FileWriter(path+"\\"); //경로에 있는 파일을 불러온다
+                        int c;
+                        while((c = fileReader1.read())!=-1){ //첫 번째 파일 읽기
+                            fileWriter.write((char)c); //불러온 파일에 추가
+                            System.out.print((char)c); //파일 정보를 눈으로 확인하기 위해 출력
+                        }
+                        while((c = fileReader2.read())!=-1){ // 두 번째 파일 정보 읽기
+                            fileWriter.write((char)c);//불러온 파일에 추가
+                            System.out.print((char)c);//파일 정보를 눈으로 확인하기 위해 출력
+                        }
+                        fileWriter.flush(); //파일 추가
+                        fileWriter.close();
+                        lbl.setText(chooser.getSelectedFile().getName() + " save"); //저장을 완료 했다고 띄워주기
+                    } catch (IOException ex) { //에러 잡기
+                        throw new RuntimeException(ex);
+                    }
+                }
 
-
-
-public class hw8장6번 extends JFrame{
-	private MDIA mod;
-	private JButton jb;
-	private JLabel jl;
-
-	public hw8장6번(){
-		setTitle("과제 8장 6번");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		Container c= getContentPane();
-		c.setLayout(new FlowLayout());
-
-		mod= new MDIA(this, "파일 선택");
-		jb = new JButton("파일 선택 창 띄우기");
-		jl= new JLabel("계산 결과 출력");
-
-		jb.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				mod.setVisible(true);
-
-			}
-		});
-		c.add(jb);
-		setSize(300,300);
-		setVisible(true);
-
+            }
+        }
     }
     public static void main(String[] args) {
-		new hw8장6번();
-	}
+            new hw8장6번();
+    }
 }

@@ -80,7 +80,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     public static JTextField update_code = new JTextField(5);//변경할 그룹 코드->페ㅐ이지들어오면 현재 선택했던 코드이 들가야댐
     public static JButton groupUpdate_btn = new JButton("그룹변경");//그룹변경하기 기능 구현
 
-    public static JButton groupBack_btn = new JButton("뒤로가기");//그룹뷰 페이지로 전환
+    public static JButton groupBack_btn = new JButton("Back");//그룹뷰 페이지로 전환
 
 
     //할일목록 pane
@@ -161,7 +161,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
     Todo_Set todoSet = new Todo_Set();
 
     public CalendarSwing() throws SQLException {
-        super("공유캘린터 자바 팀프로젝트");
+        super("ToDo Manager");
 
 
         c.setLayout(new BorderLayout());
@@ -211,7 +211,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         change_cancel.addMouseListener(m); //할일 취소 기능 구현
 
         //메인 상단
-        JLabel title = new JLabel("2022 자바2 팀프로젝트");
+        JLabel title = new JLabel("ToDo Manager");
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(title_fnt);
         title.setBackground(new Color(0X9DDBFE));
@@ -339,7 +339,7 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-    public static JButton logout = new JButton("뒤로 가기");
+    public static JButton logout = new JButton("logout");
     public void setLogin() throws SQLException {
         login_pane.removeAll();
         //로그인 팬
@@ -650,6 +650,8 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
 
                 long dayTemp = (result / 1000 / 60 / 60 / 24) -31; //디데이 날짜 기준 계산
 
+                if(dayTemp < 0) continue;
+
                 if(dayTemp == 0){
                     D_day.add("D-day");
                 }else{
@@ -780,8 +782,10 @@ public class CalendarSwing extends JFrame implements  ItemListener, ActionListen
             }
             if (ok.equals("로그인 불가")) {
                 System.out.println("로그인 불가");
+                logout.setText("Back");
                 loginFail.login_fail();
             } else {
+                logout.setText("Logout");
                 System.out.println("!!#@@#");
                 try {
                     loginSuccess.login_success();
