@@ -1,0 +1,24 @@
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\bin\Debug\DrawLines.exe.config
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\bin\Debug\DrawLines.exe
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\bin\Debug\DrawLines.pdb
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\obj\Debug\DrawLines.csprojResolveAssemblyReference.cache
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\obj\Debug\DrawLines.Form1.resources
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\obj\Debug\DrawLines.Form2.resources
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\obj\Debug\DrawLines.Properties.Resources.resources
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\obj\Debug\DrawLines.csproj.GenerateResource.Cache
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\obj\Debug\DrawLines.exe
+C:\Users\Supervisor\Desktop\실습과제들\4 - DrawLines 모음\5-DrawLines-파일 입출력\obj\Debug\DrawLines.pdb
+C:\Users\Student\Desktop\닷넷0411\수업\5-DrawLines-파일 입출력\bin\Debug\DrawLines.exe.config
+C:\Users\Student\Desktop\닷넷0411\수업\5-DrawLines-파일 입출력\obj\Debug\DrawLines.exe
+C:\Users\Student\Desktop\닷넷0411\수업\5-DrawLines-파일 입출력\obj\Debug\DrawLines.pdb
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\bin\Debug\DrawLines.exe.config
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.exe
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.pdb
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.csprojResolveAssemblyReference.cache
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.Form1.resources
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.Form2.resources
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.Properties.Resources.resources
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.csproj.GenerateResource.Cache
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\bin\Debug\DrawLines.exe
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\bin\Debug\DrawLines.pdb
+C:\Users\Student\Desktop\닷넷0411\수업\(0교수님 파일)그림판 저장 마무리\obj\Debug\DrawLines.Form3.resources
